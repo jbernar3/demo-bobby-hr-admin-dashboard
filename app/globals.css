@@ -28,6 +28,16 @@
       transform: scale(0.8);
     }
   }
+  --animate-sweep: sweep 2.4s ease-in-out infinite;
+
+  @keyframes sweep {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(350%);
+    }
+  }
   @keyframes blink {
     to {
       visibility: hidden;

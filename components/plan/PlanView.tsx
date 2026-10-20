@@ -22,6 +22,7 @@ import { cn, money, moneyK, plural } from "@/lib/format";
 import { levelFundedSummary, spendTrend } from "@/lib/levelFunded";
 import type { Tier } from "@/lib/types";
 import { BarChart, LineChart } from "../charts";
+import { RenewalOptions } from "./RenewalOptions";
 import { Badge, CountUp, PageHeader, Reveal, SectionTitle } from "../ui";
 
 function split(rates: Record<Tier, number>, tier: Tier, eePct: number, depPct: number) {
@@ -83,6 +84,8 @@ export function PlanView() {
         }
         sub={`Total benefits premium for ${monthLabelLong(CURRENT_MONTH)} across ${Object.keys(carriers).length - 1} carriers. Parallax pays ${Math.round((shares.employer / (shares.employer + shares.employee)) * 100)}%.`}
       />
+
+      <RenewalOptions />
 
       <section aria-label="Cost summary" className="mb-14 grid grid-cols-1 border border-ink lg:grid-cols-[1fr_1fr_1fr_1.6fr]">
         <Stat label="Annualized" value={money(total * 12)} />

@@ -102,3 +102,43 @@ export const accountsAdmin = {
   fsa: "Healthcare FSA up to IRS limit; Dependent Care FSA",
   cobra: "Keystone Admin issues COBRA notices on Bobby's instruction",
 };
+
+/** 2027 medical options Bobby is weighing. Ranges are Bobby estimates, as a change vs. the current annual medical premium. */
+export const renewalOptions = [
+  {
+    id: "renegotiate",
+    label: "Renegotiate",
+    provider: "Meridian Health",
+    structure: "Level-funded, same plans",
+    range: [-0.06, -0.02] as [number, number],
+    live: ["Drafting counter-proposal", "Pulling claims experience", "Benchmarking admin fee"],
+    points: [
+      "Claims are running under the fund, which supports asking for a lower admin fee or stop-loss rate",
+      "Lowest effort. Employees see no change",
+    ],
+  },
+  {
+    id: "level",
+    label: "Level plan",
+    provider: "Meridian Health",
+    structure: "Fixed premium, fully insured",
+    range: [0.01, 0.03] as [number, number],
+    live: ["Requesting rate guarantee terms", "Modeling surplus given up", "Comparing risk charge"],
+    points: [
+      "Same price every month with a 12-month rate guarantee",
+      "Meridian carries the claims risk, so there is no surplus refund",
+    ],
+  },
+  {
+    id: "switch",
+    label: "Different provider",
+    provider: "2 competing quotes",
+    structure: "New carrier, new networks",
+    range: [-0.08, 0.04] as [number, number],
+    live: ["Quote 1 of 2 received", "Checking network overlap", "Matching plan designs"],
+    points: [
+      "Widest range: could beat Meridian, could cost more",
+      "Employees may change doctors and re-enroll, and a new carrier means a new claims history",
+    ],
+  },
+];
