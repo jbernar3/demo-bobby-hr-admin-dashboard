@@ -11,7 +11,7 @@ import { oeStatusById } from "@/data/enrollment";
 import { DEMO_TODAY, daysFromToday, fmtShort, parts, relative } from "@/lib/dates";
 import { cn, money, plural } from "@/lib/format";
 import { metrics } from "@/lib/selectors";
-import { useDemo } from "@/lib/store";
+import { demoToast, useDemo } from "@/lib/store";
 import type { Urgency } from "@/lib/types";
 import { Badge, CountUp, Reveal, SectionTitle, WorkingDot } from "../ui";
 import { ApprovalCard } from "./ApprovalCard";
@@ -286,7 +286,20 @@ function OEModule() {
           <div className="bg-neutral-400" style={{ width: `${(inProgress / eligible.length) * 100}%` }} />
         </div>
       </div>
-      <Link href="/enrollment" className="mt-5 inline-flex items-center gap-1 text-[13px] font-semibold underline-offset-4 hover:underline">
+      <div className="mt-5 flex items-center gap-3 rounded-[4px] border border-neutral-300 px-3 py-2.5">
+        <span className="size-3.5 shrink-0 rounded-[3px] border border-ink" aria-hidden />
+        <span className="min-w-0 flex-1 text-[13px]">
+          <span className="font-semibold">To do:</span> Book time with Marco, your licensed advisor
+        </span>
+        <button
+          type="button"
+          onClick={() => demoToast("Booking time with Marco")}
+          className="shrink-0 text-[12.5px] font-semibold underline-offset-4 hover:underline"
+        >
+          Book
+        </button>
+      </div>
+      <Link href="/enrollment" className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold underline-offset-4 hover:underline">
         Enrollment command center <ArrowUpRight className="size-3.5" aria-hidden />
       </Link>
     </section>

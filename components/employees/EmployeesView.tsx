@@ -6,19 +6,20 @@ import { useState } from "react";
 import { employeeById, employees, fullName } from "@/data/employees";
 import { fmtShort } from "@/lib/dates";
 import { cn, plural } from "@/lib/format";
-import { hasOpenFlags } from "@/lib/flags";
-import { useDemoState } from "@/lib/store";
+import { employeeFlags, hasOpenFlags } from "@/lib/flags";
+import { type DemoState, useDemoState } from "@/lib/store";
 import type { Employee } from "@/lib/types";
 import { PageHeader, Segmented } from "../ui";
 import { EmployeeDrawer } from "./EmployeeDrawer";
 import { medicalLabel } from "./labels";
 import { FilterMenu } from "./FilterMenu";
 
-type SortKey = "name" | "title" | "department" | "state" | "type" | "medical" | "dental" | "vision" | "status";
+type SortKey = "name" | "title" | "department" | "state" | "type" | "medical" | "dental" | "vision" | "status" | "flags";
 
 function sortValue(e: Employee, key: SortKey): string {
   switch (key) {
     case "name":
+    case "flags":
       return `${e.lastName} ${e.firstName}`;
     case "medical":
       return medicalLabel(e).text;
@@ -44,7 +45,7 @@ export function EmployeesView() {
   const [enrolled, setEnrolled] = useState<"all" | "enrolled" | "not">("all");
   const [type, setType] = useState<"all" | "Full-time" | "Part-time">("all");
   const [showTerminated, setShowTerminated] = useState(false);
-  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "name", dir: 1 });
+  const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "flags", dir: 1 });
 
   const base = employees.filter((e) => showTerminated || e.status === "Active");
   const countBy = (k: (e: Employee) => string) =>
@@ -59,7 +60,18 @@ export function EmployeesView() {
       .filter((e) => depts.length === 0 || depts.includes(e.department))
       .filter((e) => enrolled === "all" || (enrolled === "enrolled" ? !!e.coverage.medical : !e.coverage.medical))
       .filter((e) => type === "all" || e.type === type)
-    .sort((a, b) => sortValue(a, sort.key).localeCompare(sortValue(b, sort.key)) * sort.dir);
+    .sort((a, b) => {
+      // Default view: urgent flags first, then other open flags, then everyone else.
+      if (sort.key === "flags") {
+        const rank = (e: Employee) => {
+          const open = employeeFlags(e, state.done).filter((f) => !f.resolved);
+          return open.some((f) => f.urgent) ? 0 : open.length ? 1 : 2;
+        };
+        const d = rank(a) - rank(b);
+        if (d) return d;
+      }
+      return sortValue(a, sort.key).localeCompare(sortValue(b, sort.key)) * sort.dir;
+    });
 
   const open = (id: string | null) => {
     const q = new URLSearchParams(params.toString());
@@ -79,7 +91,7 @@ export function EmployeesView() {
     { key: "medical", label: "Medical" },
     { key: "dental", label: "Dental" },
     { key: "vision", label: "Vision" },
-    { key: "status", label: "Status" },
+    { key: "status", label: "Employment Status" },
   ];
   const filtersOn = query || states.length || depts.length || enrolled !== "all" || type !== "all";
 
@@ -208,11 +220,7 @@ export function EmployeesView() {
                       className="inline-flex items-center gap-2 text-left font-semibold hover:underline"
                     >
                       {fullName(e)}
-                      {flagged && (
-                        <span className="inline-flex size-[18px] items-center justify-center rounded-[3px] bg-ink text-[10px] font-black text-paper" title="Bobby has a flag on this person">
-                          B<span className="sr-only">: Bobby flag</span>
-                        </span>
-                      )}
+                      {flagged && <FlagBadge employee={e} done={state.done} />}
                     </button>
                   </td>
                   <td className="py-2.5 pr-3 text-neutral-700">{e.title}</td>
@@ -241,5 +249,43 @@ export function EmployeesView() {
 
       <EmployeeDrawer employee={selected} onClose={() => open(null)} />
     </div>
+  );
+}
+
+function FlagBadge({ employee, done }: { employee: Employee; done: DemoState["done"] }) {
+  const [pos, setPos] = useState<{ x: number; y: number } | null>(null);
+  const flags = employeeFlags(employee, done).filter((f) => !f.resolved);
+  const urgent = flags.some((f) => f.urgent);
+  return (
+    <span
+      className={cn(
+        "inline-flex size-[18px] items-center justify-center rounded-[3px] text-[10px] font-black",
+        urgent ? "bg-signal text-paper" : "bg-amber-400 text-ink",
+      )}
+      onMouseEnter={(ev) => {
+        const r = ev.currentTarget.getBoundingClientRect();
+        setPos({ x: r.left, y: r.bottom + 6 });
+      }}
+      onMouseLeave={() => setPos(null)}
+    >
+      B<span className="sr-only">: Bobby flag</span>
+      {pos && (
+        <span
+          role="tooltip"
+          style={{ left: Math.min(pos.x, window.innerWidth - 316), top: pos.y }}
+          className={cn("pointer-events-none fixed z-50 w-[300px] rounded-[6px] border-2 bg-paper p-3.5 text-left font-normal normal-case text-ink shadow-[4px_4px_0_0_#000]", urgent ? "border-signal" : "border-amber-400")}
+        >
+          <span className={cn("mb-2 block text-[11px] font-bold uppercase tracking-[0.12em]", urgent ? "text-signal-ink" : "text-amber-700")}>{urgent ? "Needs attention" : "Bobby flags"}</span>
+          <span className="block space-y-2.5">
+            {flags.map((f) => (
+              <span key={f.id} className="block">
+                <span className="block text-[13px] font-semibold leading-snug">{f.text}</span>
+                {f.detail && <span className="block text-[12px] font-normal leading-snug text-neutral-600">{f.detail}</span>}
+              </span>
+            ))}
+          </span>
+        </span>
+      )}
+    </span>
   );
 }

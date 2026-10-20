@@ -30,6 +30,7 @@ export function employeeFlags(emp: Employee, done: DemoState["done"]): Flag[] {
         text: `Dependent aged out ${fmtShort(`${Number(d.dob.slice(0, 4)) + 26}-${d.dob.slice(5)}`)}`,
         detail: `${d.name} turned 26 and lost eligibility at month end. Tier should drop.`,
         href: "/enrollment",
+        urgent: !done["downgrade-jordan"],
         resolved: !!done["downgrade-jordan"],
       });
     }
@@ -55,6 +56,7 @@ export function employeeFlags(emp: Employee, done: DemoState["done"]): Flag[] {
       text: `${le.type} on ${fmtShort(le.eventDate)}: window closes ${fmtShort(addDays(le.eventDate, le.windowDays))}`,
       detail: le.description,
       href: "/enrollment",
+      urgent: addDays(le.eventDate, le.windowDays) <= addDays(DEMO_TODAY, 30),
       resolved: !!(le.actionId && done[le.actionId]),
     });
   }
