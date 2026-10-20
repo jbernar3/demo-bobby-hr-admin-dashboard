@@ -2,8 +2,10 @@
 
 import { Menu, MessageSquare, Search } from "lucide-react";
 import Link from "next/link";
+import { useEffect, useRef, useState } from "react";
 import { advisor } from "@/data/company";
 import { DEMO_TODAY, fmtLong } from "@/lib/dates";
+import { demoToast } from "@/lib/store";
 import { Button, Kbd } from "../ui";
 import { useUI } from "./ui-context";
 
@@ -41,21 +43,79 @@ export function TopBar() {
 
         <div className="ml-auto flex shrink-0 items-center gap-4">
           <span className="num hidden text-[12.5px] text-neutral-500 xl:inline">{fmtLong(DEMO_TODAY)}</span>
-          <span className="hidden items-center gap-2 text-[12.5px] text-neutral-600 md:flex" title={advisor.title}>
-            <span className="relative inline-flex size-6 items-center justify-center rounded-full border border-ink text-[10px] font-bold">
-              {advisor.initials}
-              <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full border border-paper bg-ink" aria-hidden />
-            </span>
-            <span className="hidden xl:inline">
-              {advisor.name.split(" ")[0]} · {advisor.availability.toLowerCase()}
-            </span>
-          </span>
+          <AdvisorBadge />
           <Button variant="primary" onClick={() => openAsk()} aria-label="Open Ask Bobby panel">
             <MessageSquare className="size-4" aria-hidden />
             <span className="hidden sm:inline">Ask Bobby</span>
           </Button>
         </div>
       </div>
+    </div>
+  );
+}
+
+function AdvisorBadge() {
+  const [pinned, setPinned] = useState(false);
+  const [hovered, setHovered] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const open = pinned || hovered;
+
+  useEffect(() => {
+    if (!pinned) return;
+    const onDown = (e: MouseEvent) => {
+      if (!ref.current?.contains(e.target as Node)) setPinned(false);
+    };
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setPinned(false);
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [pinned]);
+
+  return (
+    <div
+      ref={ref}
+      className="relative hidden md:block"
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+    >
+      <button
+        type="button"
+        onClick={() => setPinned((v) => !v)}
+        aria-expanded={open}
+        aria-controls="advisor-popover"
+        className="flex items-center gap-2 rounded-[4px] text-[12.5px] text-neutral-600 hover:text-ink"
+      >
+        <span className="relative inline-flex size-6 items-center justify-center rounded-full border border-ink text-[10px] font-bold">
+          {advisor.initials}
+          <span className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full border border-paper bg-ink" aria-hidden />
+        </span>
+        <span className="hidden xl:inline">
+          {advisor.name.split(" ")[0]} · {advisor.availability.toLowerCase()}
+        </span>
+      </button>
+      {open && (
+        <div
+          id="advisor-popover"
+          role="tooltip"
+          className="absolute right-0 top-full z-40 w-[280px] pt-2"
+        >
+          <div className="rounded-[6px] border border-ink bg-paper p-4 text-left shadow-[4px_4px_0_0_#000]">
+            <p className="text-[14px] font-bold tracking-[-0.01em]">{advisor.name}</p>
+            <p className="text-[12px] text-neutral-500">{advisor.title}</p>
+            <div className="mt-4 flex gap-2">
+              <Button variant="primary" size="sm" className="flex-1" onClick={() => demoToast("Messaging Marco")}>
+                Message
+              </Button>
+              <Button size="sm" className="flex-1" onClick={() => demoToast("Booking time with Marco")}>
+                Book time
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
