@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Bobby: AI-native benefits companion (demo)
 
-## Getting Started
-
-First, run the development server:
+A sales demo of the HR-facing dashboard for an AI-native benefits brokerage. **All data is fictitious**: no backend, no auth, no external calls.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
+npm run build && npm run lint
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Deploys to Vercel with zero config.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## How it's built
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Next.js App Router + TypeScript + Tailwind v4**, `geist` fonts, `lucide-react`, `framer-motion`. Charts are hand-rolled SVG.
+- **`/data`**: typed fake data (employees, plans, findings, compliance, cases, scripted Ask Bobby answers).
+- **`/lib`**: every on-screen number is computed here, so edits to `/data` stay consistent.
+  - `dates.ts`: `DEMO_TODAY` (Tue, Oct 20, 2026). All relative dates derive from it.
+  - `billing.ts`: three-way match engine (HRIS eligibility vs payroll vs carrier invoice) and finding impacts.
+  - `aca.ts`: ALE / FTE projection (30+ hrs = full-time, part-time hours ÷ 120).
+  - `levelFunded.ts`: claims vs fund, surplus projection.
+  - `selectors.ts`: metrics that combine data with approval state.
+  - `store.ts`: client-only approval state (localStorage, fail-safe). **Reset demo** lives in the sidebar footer.
 
-## Learn More
+## Editing the story
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Change a person or tier in `data/employees.ts`, and premiums, the match grid, findings, and Ask Bobby answers update.
+- Billing findings live in `data/findings.ts`; dollar impact is computed from rates, never stored.
+- Part-timer hours (`weeklyHoursByMonth`) drive the ACA projection; tune them to move the ALE crossing point.
