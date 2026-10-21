@@ -268,14 +268,14 @@ function FlagBadge({ employee, done }: { employee: Employee; done: DemoState["do
       }}
       onMouseLeave={() => setPos(null)}
     >
-      B<span className="sr-only">: Bobby flag</span>
+      K<span className="sr-only">: Keel flag</span>
       {pos && (
         <span
           role="tooltip"
           style={{ left: Math.min(pos.x, window.innerWidth - 316), top: pos.y }}
           className={cn("pointer-events-none fixed z-50 w-[300px] rounded-[6px] border-2 bg-paper p-3.5 text-left font-normal normal-case text-ink shadow-[4px_4px_0_0_#000]", urgent ? "border-signal" : "border-amber-400")}
         >
-          <span className={cn("mb-2 block text-[11px] font-bold uppercase tracking-[0.12em]", urgent ? "text-signal-ink" : "text-amber-700")}>{urgent ? "Needs attention" : "Bobby flags"}</span>
+          <span className={cn("mb-2 block text-[11px] font-bold uppercase tracking-[0.12em]", urgent ? "text-signal-ink" : "text-amber-700")}>{urgent ? "Needs attention" : "Keel flags"}</span>
           <span className="block space-y-2.5">
             {flags.map((f) => (
               <span key={f.id} className="block">

@@ -33,7 +33,7 @@ export function GrowthView() {
 
   return (
     <div>
-      <PageHeader eyebrow="Growth Alerts" title={<>Bobby watches the lines you&apos;re about to cross.</>} sub="Federal and state rules switch on at specific headcounts. Bobby tracks where Parallax is against each one and warns you before you cross." />
+      <PageHeader eyebrow="Growth Alerts" title={<>Keel watches the lines you&apos;re about to cross.</>} sub="Federal and state rules switch on at specific headcounts. Keel tracks where Parallax is against each one and warns you before you cross." />
       <ThresholdTrack employees={active.length} fte={baseline.average} participants={participants} />
       <AcaProjection />
       <div className="mt-16 grid grid-cols-1 gap-12 xl:grid-cols-2">
@@ -248,7 +248,7 @@ function AcaProjection() {
           aria-controls="aca-math"
           className="flex w-full items-center justify-between px-7 py-4 text-left text-[14px] font-semibold hover:bg-neutral-50"
         >
-          How Bobby calculated this
+          How Keel calculated this
           <ChevronDown className={cn("size-4 transition-transform duration-150", showMath && "rotate-180")} aria-hidden />
         </button>
         <AnimatePresence initial={false}>
@@ -377,7 +377,7 @@ function OregonAlert() {
         <div className="mt-5">
           {filed ? (
             <p className="flex items-center gap-2 text-[14px] font-semibold">
-              <Check className="size-4" aria-hidden /> Bobby filed all three registrations at {state.done["oregon-registrations"].at}. Confirmations in 3–5 business days.
+              <Check className="size-4" aria-hidden /> Keel filed all three registrations at {state.done["oregon-registrations"].at}. Confirmations in 3–5 business days.
             </p>
           ) : (
             <Button
@@ -388,7 +388,7 @@ function OregonAlert() {
                 toast(actionById["oregon-registrations"].toast);
               }}
             >
-              <Check className="size-4" aria-hidden /> Approve: Bobby files registrations
+              <Check className="size-4" aria-hidden /> Approve: Keel files registrations
             </Button>
           )}
         </div>
@@ -440,7 +440,7 @@ function PartTimeWatch() {
           />
         </div>
         <p className="mt-4 rounded-[4px] bg-neutral-100 px-4 py-3 text-[13.5px] leading-snug">
-          <span className="font-semibold">Bobby:</span> Sam has averaged {num(recent, 1)} hrs/week since July. If the trend holds, he counts as full-time for ACA purposes, which matters for the offer-of-coverage rule once Parallax is an ALE. Consider offering benefits or capping hours. Oct is month-to-date.
+          <span className="font-semibold">Keel:</span> Sam has averaged {num(recent, 1)} hrs/week since March. If the trend holds, he counts as full-time for ACA purposes, which matters for the offer-of-coverage rule once Parallax is an ALE. Consider offering benefits or capping hours. Oct is month-to-date.
         </p>
         <table className="mt-6 w-full text-[13.5px]">
           <caption className="sr-only">Part-time employees and recent hours</caption>

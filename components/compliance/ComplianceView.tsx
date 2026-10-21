@@ -54,7 +54,7 @@ export function ComplianceView() {
       <PageHeader
         eyebrow="Compliance"
         title="Every deadline, watched."
-        sub="Bobby tracks federal, state, and local obligations for Parallax and drafts what's needed. Nothing here is legal advice, and Marco reviews anything that is."
+        sub="Keel tracks federal, state, and local obligations for Parallax and drafts what's needed. Nothing here is legal advice, and Marco reviews anything that is."
       />
 
       {/* ── Score ─────────────────────────────────────────── */}
@@ -74,7 +74,7 @@ export function ComplianceView() {
         <div className="p-6 lg:p-8">
           <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-neutral-500">What&apos;s dragging it down</p>
           {drags.length === 0 ? (
-            <p className="text-[22px] font-bold tracking-[-0.02em]">All clear. Bobby will keep watching.</p>
+            <p className="text-[22px] font-bold tracking-[-0.02em]">All clear. Keel will keep watching.</p>
           ) : (
             <ul className="divide-y divide-neutral-200">
               {groupByAction(drags).map((g) => (
@@ -138,7 +138,7 @@ function groupByAction(drags: CView[]) {
     map.set(key, {
       key,
       title: isOregon ? "Oregon registrations (3)" : d.title,
-      note: isOregon ? "Paid Leave Oregon, withholding, UI. First paycheck was Oct 15" : d.effectiveNote ?? d.rule,
+      note: isOregon ? "Paid Leave Oregon, withholding, UI. First paycheck was Jun 15" : d.effectiveNote ?? d.rule,
       weight: d.effectiveWeight,
       actionId: d.actionId,
     });
@@ -165,9 +165,9 @@ function ActionButton({ actionId, size = "sm" }: { actionId: string; size?: "sm"
 
 // ── Timeline ─────────────────────────────────────────────
 
-const RANGE_START = "2026-09-01";
+const RANGE_START = "2026-06-01";
 const RANGE_END = "2027-01-15";
-const MONTH_TICKS = ["2026-09-01", "2026-10-01", "2026-11-01", "2026-12-01"];
+const MONTH_TICKS = ["2026-06-01", "2026-07-01", "2026-08-01", "2026-09-01", "2026-10-01", "2026-11-01", "2026-12-01"];
 
 function Timeline({ views }: { views: CView[] }) {
   const span = daysBetween(RANGE_START, RANGE_END);
@@ -260,11 +260,11 @@ function OwnerChip({ owner }: { owner: Owner }) {
         <Avatar initials={advisor.initials} size={20} /> Marco
       </span>
     );
-  if (owner === "Bobby")
+  if (owner === "Keel")
     return (
       <span className="inline-flex items-center gap-1.5 text-[13px]">
-        <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-ink text-[10px] font-black text-paper" aria-hidden>B</span>
-        Bobby
+        <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-ink text-[10px] font-black text-paper" aria-hidden>K</span>
+        Keel
       </span>
     );
   return (

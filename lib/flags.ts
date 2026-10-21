@@ -19,7 +19,7 @@ export interface Flag {
   resolved?: boolean;
 }
 
-/** Everything Bobby has noticed about one person, computed from the data. */
+/** Everything Keel has noticed about one person, computed from the data. */
 export function employeeFlags(emp: Employee, done: DemoState["done"]): Flag[] {
   const flags: Flag[] = [];
 
@@ -64,8 +64,8 @@ export function employeeFlags(emp: Employee, done: DemoState["done"]): Flag[] {
   if (emp.id === STORY.priya) {
     flags.push({
       id: "cobra",
-      text: "COBRA election notice not sent: due Nov 13",
-      detail: "Bobby has a pre-filled notice ready for Keystone Admin.",
+      text: "COBRA election notice not sent: due Jul 14",
+      detail: "Keel has a pre-filled notice ready for Keystone Admin.",
       href: "/compliance",
       urgent: !done["cobra-priya"],
       resolved: !!done["cobra-priya"],

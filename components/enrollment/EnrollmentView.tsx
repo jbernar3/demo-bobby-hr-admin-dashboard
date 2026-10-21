@@ -35,10 +35,11 @@ export function EnrollmentView() {
   const windowDays = daysBetween(openEnrollment.start, openEnrollment.end) + 1;
   const nudged = state.done["nudge-oe"];
   const packetDone = state.done["oe-packet"];
+  const soon = opensIn <= 45;
 
   return (
     <div>
-      <PageHeader eyebrow="Enrollment · 2027 plan year" title="Open enrollment command center" sub="Bobby runs open enrollment, life events, and new-hire eligibility. You approve the messages and changes." />
+      <PageHeader eyebrow="Enrollment · 2027 plan year" title="Open enrollment command center" sub="Keel runs open enrollment, life events, and new-hire eligibility. You approve the messages and changes." />
 
       {/* ── Countdown ───────────────────────────────────── */}
       <section aria-label="Open enrollment countdown" className="mb-14 grid grid-cols-1 border border-ink lg:grid-cols-[1fr_1fr_1.2fr]">
@@ -55,14 +56,20 @@ export function EnrollmentView() {
         <div className="border-b border-ink p-7 lg:border-b-0 lg:border-r">
           <p className="text-[12px] font-semibold uppercase tracking-[0.14em] text-neutral-500">Readiness</p>
           <ul className="mt-4 space-y-2.5 text-[14px]">
-            <li className="flex items-center gap-2.5"><Check className="size-4" aria-hidden /> Renewal finalized ({openEnrollment.renewalsFinalized}/{openEnrollment.renewalsTotal}): rates flat for 2027</li>
-            <li className="flex items-center gap-2.5"><Check className="size-4" aria-hidden /> Decision support opened {fmtShort(openEnrollment.decisionSupportOpened)}</li>
+            <li className="flex items-center gap-2.5">
+              <span className="ml-1 mr-0.5 size-2 rounded-full border-[1.5px] border-ink" aria-hidden />
+              Renewal finalized ({openEnrollment.renewalsFinalized}/{openEnrollment.renewalsTotal}): proposal expected this summer
+            </li>
+            <li className="flex items-center gap-2.5">
+              <span className="ml-1 mr-0.5 size-2 rounded-full border-[1.5px] border-ink" aria-hidden />
+              Decision support opens {fmtShort(openEnrollment.decisionSupportOpened)}
+            </li>
             <li className="flex items-center gap-2.5">
               {packetDone ? <Check className="size-4" aria-hidden /> : <span className="ml-1 mr-0.5 size-2 rounded-full border-[1.5px] border-ink" aria-hidden />}
-              OE packet with SBCs {packetDone ? `scheduled (${packetDone.at})` : "awaiting your approval"}
+              OE packet with SBCs {packetDone ? `scheduled (${packetDone.at})` : soon ? "awaiting your approval" : "Keel drafts this closer to open"}
             </li>
           </ul>
-          {!packetDone && (
+          {!packetDone && soon && (
             <Button
               variant="primary"
               className="mt-5"
@@ -90,7 +97,9 @@ export function EnrollmentView() {
               </div>
             ))}
           </dl>
-          {nudged ? (
+          {!soon ? (
+            <p className="mt-4 text-[13.5px] text-neutral-600">Early decisions open {fmtShort(openEnrollment.decisionSupportOpened)}. Keel nudges anyone who hasn&apos;t started.</p>
+          ) : nudged ? (
             <p className="mt-4 flex items-center gap-2 text-[13.5px] font-semibold"><Check className="size-4" aria-hidden /> Nudge sent at {nudged.at}</p>
           ) : (
             <Button className="mt-4" onClick={() => setNudgeOpen(true)}>
@@ -245,7 +254,7 @@ export function EnrollmentView() {
         }
       >
         <p className="mb-4 text-[13.5px] text-neutral-600">
-          Bobby drafted this. It posts once in #general and goes as a DM to everyone who hasn&apos;t started. Edit anything before approving.
+          Keel drafted this. It posts once in #general and goes as a DM to everyone who hasn&apos;t started. Edit anything before approving.
         </p>
         <label htmlFor="nudge-text" className="sr-only">Slack message</label>
         <textarea

@@ -16,7 +16,7 @@ export interface DemoState {
   seq: number;
 }
 
-const KEY = "bobby-demo-state-v1";
+const KEY = "keel-demo-state-v1";
 const INITIAL: DemoState = { done: {}, dismissed: {}, seq: 0 };
 
 let state: DemoState = INITIAL;
@@ -126,7 +126,7 @@ export function toast(message: string, tone: Toast["tone"] = "default") {
 }
 
 export function demoToast(what = "This") {
-  toast(`${what} is a demo. In production, Bobby would handle it end to end.`, "demo");
+  toast(`${what} is a demo. In production, Keel would handle it end to end.`, "demo");
 }
 
 export function dismissToast(id: number) {

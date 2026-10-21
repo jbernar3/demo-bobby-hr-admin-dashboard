@@ -100,10 +100,10 @@ export const LIFE_RATE_PER_EMPLOYEE =
 export const accountsAdmin = {
   hsa: "Employer seeds $500 (EE) / $1,000 (with dependents) per year",
   fsa: "Healthcare FSA up to IRS limit; Dependent Care FSA",
-  cobra: "Keystone Admin issues COBRA notices on Bobby's instruction",
+  cobra: "Keystone Admin issues COBRA notices on Keel's instruction",
 };
 
-/** 2027 medical options Bobby is weighing. Ranges are Bobby estimates, as a change vs. the current annual medical premium. */
+/** 2027 medical options Keel is weighing. Ranges are Keel estimates, as a change vs. the current annual medical premium. */
 export const renewalOptions = [
   {
     id: "renegotiate",

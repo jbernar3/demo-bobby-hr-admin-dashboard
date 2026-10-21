@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { actionById } from "@/data/actions";
 import { advisor } from "@/data/company";
-import { answerFor, ASK_QUESTIONS, FALLBACK_TEXT, matchQuestion } from "@/data/askBobby";
+import { answerFor, ASK_QUESTIONS, FALLBACK_TEXT, matchQuestion } from "@/data/askKeel";
 import { cn } from "@/lib/format";
 import { approve, demoToast, toast, useDemoState } from "@/lib/store";
 import type { AnswerBlock } from "@/lib/types";
@@ -15,7 +15,7 @@ import { useUI } from "./ui-context";
 
 interface Message {
   id: number;
-  role: "user" | "bobby";
+  role: "user" | "keel";
   text?: string;
   blocks?: AnswerBlock[];
   fallback?: boolean;
@@ -56,7 +56,7 @@ export function AskPanel() {
     if (!q || streaming) return;
     const matched = matchQuestion(q);
     const userMsg: Message = { id: ++seq.current, role: "user", text: q };
-    const bobbyId = ++seq.current;
+    const keelId = ++seq.current;
     const blocks: AnswerBlock[] = matched ? answerFor(matched, doneRef.current) : [{ type: "text", text: FALLBACK_TEXT }];
     setMessages((m) => [...m, userMsg]);
     setInput("");
@@ -64,11 +64,11 @@ export function AskPanel() {
     window.setTimeout(
       () => {
         setThinking(false);
-        setMessages((m) => [...m, { id: bobbyId, role: "bobby", blocks, fallback: !matched }]);
+        setMessages((m) => [...m, { id: keelId, role: "keel", blocks, fallback: !matched }]);
         // With reduced motion the answer appears at once instead of streaming.
         if (!reduce) {
           setShown(0);
-          setStreamId(bobbyId);
+          setStreamId(keelId);
         }
       },
       reduce ? 50 : 520,
@@ -108,7 +108,7 @@ export function AskPanel() {
     return () => window.clearInterval(timer);
   }, [streamId, messages]);
 
-  // Keep the newest content in view while Bobby is typing; stop once the answer is complete.
+  // Keep the newest content in view while Keel is typing; stop once the answer is complete.
   useEffect(() => {
     const el = scrollRef.current;
     if (el && (thinking || streamId !== null)) el.scrollTop = el.scrollHeight;
@@ -127,7 +127,7 @@ export function AskPanel() {
     }
   };
 
-  const showSuggestions = !streaming && (messages.length === 0 || messages[messages.length - 1]?.role === "bobby");
+  const showSuggestions = !streaming && (messages.length === 0 || messages[messages.length - 1]?.role === "keel");
 
   return (
     <AnimatePresence>
@@ -146,7 +146,7 @@ export function AskPanel() {
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Ask Bobby"
+            aria-label="Ask Keel"
             className="absolute inset-y-0 right-0 flex w-full max-w-[480px] flex-col border-l border-ink bg-paper"
             initial={{ x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -154,7 +154,7 @@ export function AskPanel() {
             transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
           >
             <header className="surface-dark flex items-center gap-3 bg-ink px-6 py-4 text-paper">
-              <span className="text-[22px] font-black tracking-[-0.05em]">Ask Bobby</span>
+              <span className="text-[22px] font-black tracking-[-0.05em]">Ask Keel</span>
               <span className="num ml-1 flex items-center gap-2 text-[11.5px] text-neutral-400">
                 <WorkingDot dark />
                 {streaming ? "working" : "ready"}
@@ -162,7 +162,7 @@ export function AskPanel() {
               <button
                 type="button"
                 onClick={closeAsk}
-                aria-label="Close Ask Bobby"
+                aria-label="Close Ask Keel"
                 className="ml-auto inline-flex size-8 items-center justify-center rounded-[4px] text-neutral-400 hover:text-paper"
               >
                 <X className="size-5" />
@@ -189,7 +189,7 @@ export function AskPanel() {
                         <p className="max-w-[85%] rounded-[6px] bg-neutral-100 px-4 py-2.5 text-[14.5px] font-medium">{m.text}</p>
                       </div>
                     ) : (
-                      <BobbyMessage
+                      <KeelMessage
                         blocks={m.blocks ?? []}
                         limit={m.id === streamId ? shown : Infinity}
                         fallback={m.fallback}
@@ -200,7 +200,7 @@ export function AskPanel() {
                   </li>
                 ))}
                 {thinking && (
-                  <li className="flex items-center gap-2 text-[13px] text-neutral-500" aria-label="Bobby is typing">
+                  <li className="flex items-center gap-2 text-[13px] text-neutral-500" aria-label="Keel is typing">
                     <span className="flex gap-1" aria-hidden>
                       {[0, 1, 2].map((i) => (
                         <span key={i} className="size-1.5 animate-pulse-dot rounded-full bg-ink" style={{ animationDelay: `${i * 0.16}s` }} />
@@ -245,7 +245,7 @@ export function AskPanel() {
             >
               <div className="flex items-center gap-2 rounded-[4px] border border-neutral-300 pl-3.5 pr-1.5 focus-within:border-ink">
                 <label htmlFor="ask-input" className="sr-only">
-                  Ask Bobby a question
+                  Ask Keel a question
                 </label>
                 <input
                   id="ask-input"
@@ -273,7 +273,7 @@ export function AskPanel() {
   );
 }
 
-function BobbyMessage({
+function KeelMessage({
   blocks,
   limit,
   fallback,

@@ -12,7 +12,7 @@ import { employeeById, employees, fullName, STORY } from "./employees";
 import { findings } from "./findings";
 import { carriers, levelFunded, medicalContribution, TIER_LABEL } from "./plans";
 
-// Scripted Ask Bobby answers. Every number is computed from the data modules.
+// Scripted Ask Keel answers. Every number is computed from the data modules.
 
 export interface AskQuestion {
   id: string;
@@ -95,7 +95,7 @@ function weekAnswer(done: Done): AnswerBlock[] {
   const pending = actions.filter((a) => a.urgency !== "later" && !done[a.id]);
   if (pending.length === 0) {
     return [
-      { type: "text", text: "Nothing needs you this week. You've approved everything Bobby proposed. I'll keep watching invoices, deadlines, and thresholds overnight." },
+      { type: "text", text: "Nothing needs you this week. You've approved everything Keel proposed. I'll keep watching invoices, deadlines, and thresholds overnight." },
       { type: "action", label: "Back to Today", href: "/" },
     ];
   }
@@ -132,7 +132,7 @@ function marcusAnswer(): AnswerBlock[] {
   return [
     {
       type: "text",
-      text: `${fullName(marcus)} left on Aug 28, so his coverage ended Aug 31. Payroll stopped his deductions, but Meridian and Brightline never processed the termination. They billed EE+Spouse for September and October.`,
+      text: `${fullName(marcus)} left on Apr 28, so his coverage ended Apr 30. Payroll stopped his deductions, but Meridian and Brightline never processed the termination. They billed EE+Spouse for May and June.`,
     },
     { type: "table", columns: ["Month", "Carrier", "Billed", "Amount"], rows },
     { type: "stat", value: money(total, { cents: true }), label: "overbilled across 2 carriers" },
@@ -154,7 +154,7 @@ function aleAnswer(): AnswerBlock[] {
     { type: "stat", value: num(p.average, 2), label: "projected 2026 average FTEs" },
     {
       type: "table",
-      columns: ["Component (Jan–Oct avg)", "Value"],
+      columns: ["Component (Jan–Jun avg)", "Value"],
       rows: [
         ["Full-time employees (30+ hrs/wk)", num(avgFt, 1)],
         ["Part-time FTEs (hours ÷ 120)", num(avgFte, 2)],
@@ -176,7 +176,7 @@ function oregonAnswer(done: Done): AnswerBlock[] {
   return [
     {
       type: "text",
-      text: `${fullName(elena)} started Oct 1 in ${elena.city}, your first Oregon employee. That creates three state registrations, and payroll ran on Oct 15, so they're already late.`,
+      text: `${fullName(elena)} started Jun 1 in ${elena.city}, your first Oregon employee. That creates three state registrations, and payroll ran on Jun 15, so they're already late.`,
     },
     {
       type: "table",
@@ -189,7 +189,7 @@ function oregonAnswer(done: Done): AnswerBlock[] {
     },
     filed
       ? { type: "action", label: "Registrations filed. View Growth Alerts", href: "/growth" }
-      : { type: "action", label: "Approve: Bobby files registrations", actionId: "oregon-registrations" },
+      : { type: "action", label: "Approve: Keel files registrations", actionId: "oregon-registrations" },
   ];
 }
 
@@ -198,11 +198,11 @@ function levelFundedAnswer(): AnswerBlock[] {
   return [
     {
       type: "text",
-      text: `Tracking well. Through September, claims have used ${Math.round(s.lossRatio * 100)}% of the claims fund. One month (May) ran hot, but stop-loss caps any single claimant at the ${money(levelFunded.specificDeductible)} specific deductible.`,
+      text: `Tracking well. Through May, claims have used ${Math.round(s.lossRatio * 100)}% of the claims fund. One month (May) ran hot, but stop-loss caps any single claimant at the ${money(levelFunded.specificDeductible)} specific deductible.`,
     },
     {
       type: "table",
-      columns: ["Jan–Sep 2026", "Amount"],
+      columns: ["Jan–May 2026", "Amount"],
       rows: [
         ["Claims fund", money(s.ytdFund)],
         ["Paid claims", money(s.ytdClaims)],
@@ -230,11 +230,11 @@ Hi team! Open enrollment for 2027 benefits runs Mon, ${fmtShort(openEnrollment.s
 • HSA seed stays at $500 (you) / $1,000 (with dependents)
 
 *What you need to do*
-1. Open Bobby and review your options (about 5 minutes)
+1. Open Keel and review your options (about 5 minutes)
 2. Re-elect your FSA if you want one, because it doesn't roll over
 3. Add or remove dependents if anything changed this year
 
-Questions? DM Bobby anytime, or book 15 minutes with ${advisor.name}, our licensed benefits advisor.
+Questions? DM Keel anytime, or book 15 minutes with ${advisor.name}, our licensed benefits advisor.
 
 _This message goes to all ${eligible} benefits-eligible employees._`;
 }

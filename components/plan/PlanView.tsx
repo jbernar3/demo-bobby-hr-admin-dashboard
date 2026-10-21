@@ -99,7 +99,7 @@ export function PlanView() {
             yMin={60000}
             yMax={85000}
             format={(n) => `$${Math.round(n / 1000)}k`}
-            ariaLabel="Total monthly benefits spend, January to October 2026"
+            ariaLabel="Total monthly benefits spend, January to June 2026"
             height={150}
             width={520}
           />
@@ -123,7 +123,7 @@ export function PlanView() {
               }))}
               yMax={60000}
               format={(n) => `$${Math.round(n / 1000)}k`}
-              ariaLabel="Monthly paid claims versus the claims fund, January to September 2026"
+              ariaLabel="Monthly paid claims versus the claims fund, January to May 2026"
               valueLabel="Claims"
               referenceLabel="Claims fund"
               height={280}
@@ -176,7 +176,7 @@ export function PlanView() {
                 {plural(lf.flaggedCount, "claimant")} over 50% of the specific deductible
               </p>
               <p className="mt-1 text-[13px] leading-snug text-neutral-600">
-                Largest is at {Math.round(lf.topPctOfDeductible * 100)}% of {money(levelFunded.specificDeductible)}. Stop-loss pays above that. De-identified: Bobby never sees or shows names or conditions.
+                Largest is at {Math.round(lf.topPctOfDeductible * 100)}% of {money(levelFunded.specificDeductible)}. Stop-loss pays above that. De-identified: Keel never sees or shows names or conditions.
               </p>
               <ul className="mt-3 space-y-1.5">
                 {largeClaimants.map((c) => (

@@ -5,15 +5,14 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { actions } from "@/data/actions";
 import { overnightActivity } from "@/data/activity";
-import { openEnrollment, user } from "@/data/company";
+import { openEnrollment, planningTodos, user } from "@/data/company";
 import { employees } from "@/data/employees";
 import { oeStatusById } from "@/data/enrollment";
-import { DEMO_TODAY, daysFromToday, fmtShort, parts, relative } from "@/lib/dates";
-import { cn, money, plural } from "@/lib/format";
-import { metrics } from "@/lib/selectors";
+import { addDays, DEMO_TODAY, daysFromToday, fmtShort, parts, relative } from "@/lib/dates";
+import { cn, plural } from "@/lib/format";
 import { demoToast, useDemo } from "@/lib/store";
 import type { Urgency } from "@/lib/types";
-import { Badge, CountUp, Reveal, SectionTitle, WorkingDot } from "../ui";
+import { Badge, Reveal, SectionTitle, WorkingDot } from "../ui";
 import { ApprovalCard } from "./ApprovalCard";
 
 const URGENCY_RANK: Record<Urgency, number> = { today: 0, week: 1, later: 2 };
@@ -22,7 +21,6 @@ const MONTHS_LONG = ["January", "February", "March", "April", "May", "June", "Ju
 
 export function TodayView() {
   const { state, restore } = useDemo();
-  const m = metrics(state.done);
 
   const queue = actions
     .map((a, i) => ({ a, i }))
@@ -38,13 +36,6 @@ export function TodayView() {
   const { y, m: mo, d } = parts(DEMO_TODAY);
   const weekday = WEEKDAYS_LONG[new Date(Date.UTC(y, mo - 1, d)).getUTCDay()];
 
-  const summary =
-    m.todayCount === 0
-      ? queue.length === 0
-        ? "You're all caught up. Everything else is handled."
-        : `Nothing urgent today. ${plural(queue.length, "item")} can wait for this week.`
-      : `${m.todayCount} ${m.todayCount === 1 ? "thing needs" : "things need"} you today. Everything else is handled.`;
-
   return (
     <div>
       <header className="mb-12">
@@ -54,69 +45,7 @@ export function TodayView() {
         <h1 className="text-[52px] font-black leading-[0.92] tracking-[-0.045em] md:text-[76px]">
           Good morning, {user.firstName}.
         </h1>
-        <p className="mt-5 flex items-center gap-3 text-[19px] font-medium text-neutral-700">
-          <WorkingDot />
-          <span>{summary}</span>
-        </p>
       </header>
-
-      {/* ── Stat blocks ─────────────────────────────────── */}
-      <section aria-label="Key numbers" className="mb-14 grid grid-cols-1 border border-ink md:grid-cols-3">
-        <Reveal index={0} className="border-b border-ink p-7 md:border-b-0 md:border-r">
-          <StatLabel>Recovered YTD</StatLabel>
-          <CountUp id="today-recovered" value={m.recoveredYtd} format={(n) => money(n)} className="block text-[54px] font-bold leading-none tracking-[-0.075em] xl:text-[60px] 2xl:text-[68px]" />
-          <p className="mt-4 text-[13.5px] text-neutral-600">
-            Billing errors caught and credited in 2026.
-            {m.pendingCredit > 0 && (
-              <>
-                {" "}
-                <span className="num font-semibold text-ink">{money(m.pendingCredit)}</span> more pending.
-              </>
-            )}
-          </p>
-          <StatLink href="/savings">Leakage monitor</StatLink>
-        </Reveal>
-
-        <Reveal index={1} className="surface-dark border-b border-ink bg-ink p-7 text-paper md:border-b-0 md:border-r">
-          <StatLabel dark>At risk</StatLabel>
-          <CountUp
-            id="today-risk"
-            value={m.atRisk}
-            format={(n) => money(n)}
-            className={cn("block text-[54px] font-bold leading-none tracking-[-0.075em] xl:text-[60px] 2xl:text-[68px]", m.atRisk > 0 ? "text-signal" : "text-paper")}
-          />
-          <p className="mt-4 text-[13.5px] text-neutral-400">
-            <span className="num text-paper">{money(m.billingAtRisk)}</span> open billing issues
-            {m.penaltyAtRisk > 0 && (
-              <>
-                {" "}
-                + up to <span className="num text-paper">{money(m.penaltyAtRisk)}</span> in SBC penalties if OE materials slip
-              </>
-            )}
-            .
-          </p>
-          <StatLink href="/savings" dark>
-            See what&apos;s open
-          </StatLink>
-        </Reveal>
-
-        <Reveal index={2} className="p-7">
-          <StatLabel>Deadlines · next 30 days</StatLabel>
-          <CountUp id="today-deadlines" value={m.deadlines.length} format={(n) => String(Math.round(n))} className="block text-[54px] font-bold leading-none tracking-[-0.075em] xl:text-[60px] 2xl:text-[68px]" />
-          <ul className="mt-4 space-y-1.5">
-            {m.deadlines.slice(0, 3).map((dl) => {
-              const overdue = daysFromToday(dl.date) < 0;
-              return (
-                <li key={dl.id} className="flex items-baseline gap-3 text-[13.5px]">
-                  <span className={cn("num w-[52px] shrink-0 font-semibold", overdue ? "text-signal-ink" : "text-ink")}>{fmtShort(dl.date)}</span>
-                  <span className="truncate text-neutral-600">{dl.label}</span>
-                </li>
-              );
-            })}
-          </ul>
-          <StatLink href="/compliance">Compliance calendar</StatLink>
-        </Reveal>
-      </section>
 
       <div className="grid grid-cols-1 gap-12 xl:grid-cols-[minmax(0,1fr)_340px] 2xl:grid-cols-[minmax(0,1fr)_380px]">
         {/* ── Approvals ─────────────────────────────────── */}
@@ -124,7 +53,7 @@ export function TodayView() {
           <SectionTitle
             id="approvals-title"
             count={queue.length}
-            right={<span className="text-[12.5px] text-neutral-500">Bobby proposes. You approve.</span>}
+            right={<span className="text-[12.5px] text-neutral-500">Keel proposes. You approve.</span>}
           >
             Needs your approval
           </SectionTitle>
@@ -137,7 +66,7 @@ export function TodayView() {
             >
               <p className="text-[40px] font-black leading-none tracking-[-0.04em]">Inbox zero.</p>
               <p className="mt-3 max-w-md text-[15px] text-neutral-400">
-                Everything Bobby proposed is approved. Bobby keeps watching invoices, deadlines, and thresholds overnight.
+                Everything Keel proposed is approved. Keel keeps watching invoices, deadlines, and thresholds overnight.
               </p>
             </motion.div>
           )}
@@ -166,9 +95,24 @@ export function TodayView() {
 
         {/* ── Right rail ────────────────────────────────── */}
         <div className="space-y-12">
+          <Reveal index={0} as="section" className="border border-ink p-6">
+            <StatLabel>Your next to-dos</StatLabel>
+            <ul className="space-y-2">
+              {planningTodos.map((t) => (
+                <li key={t.id} className="flex items-baseline gap-3 text-[14px]">
+                  <span className="num w-[52px] shrink-0 font-semibold">{fmtShort(addDays(openEnrollment.start, -t.daysBefore))}</span>
+                  <Link href={t.href} className="min-w-0 flex-1 text-neutral-700 hover:text-ink hover:underline">
+                    {t.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <StatLink href="/plan">Plan &amp; Costs</StatLink>
+          </Reveal>
+
           <section aria-labelledby="feed-title">
             <SectionTitle id="feed-title" right={<WorkingDot />}>
-              Bobby, overnight
+              Keel, overnight
             </SectionTitle>
             <ol className="relative">
               <AnimatePresence initial={false}>
@@ -274,6 +218,11 @@ function OEModule() {
           </dd>
         </div>
       </dl>
+      {startsIn > 30 ? (
+        <p className="mt-5 text-[13px] text-neutral-600">
+          Early decisions open <span className="num font-semibold text-ink">{fmtShort(openEnrollment.decisionSupportOpened)}</span>. Keel is lining up the renewal first.
+        </p>
+      ) : (
       <div className="mt-5">
         <div className="mb-2 flex justify-between text-[12px] text-neutral-500">
           <span>Early decisions</span>
@@ -286,6 +235,7 @@ function OEModule() {
           <div className="bg-neutral-400" style={{ width: `${(inProgress / eligible.length) * 100}%` }} />
         </div>
       </div>
+      )}
       <div className="mt-5 flex items-center gap-3 rounded-[4px] border border-neutral-300 px-3 py-2.5">
         <span className="size-3.5 shrink-0 rounded-[3px] border border-ink" aria-hidden />
         <span className="min-w-0 flex-1 text-[13px]">

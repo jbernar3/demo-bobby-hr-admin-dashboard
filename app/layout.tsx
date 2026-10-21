@@ -6,10 +6,10 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: {
-    default: "Bobby · Parallax Labs",
-    template: "%s · Bobby",
+    default: "Keel · Parallax Labs",
+    template: "%s · Keel",
   },
-  description: "Bobby, the AI-native benefits companion. Demo environment with fictitious data.",
+  description: "Keel, the AI-native benefits companion. Demo environment with fictitious data.",
   robots: { index: false, follow: false },
 };
 

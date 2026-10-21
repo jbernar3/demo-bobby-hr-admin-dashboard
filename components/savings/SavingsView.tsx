@@ -77,7 +77,7 @@ export function SavingsView() {
             recovered.
           </>
         }
-        sub="Bobby reconciles every invoice against payroll and your HRIS each month. Industry data suggests ~5% of premium spend is lost to billing errors."
+        sub="Keel reconciles every invoice against payroll and your HRIS each month. Industry data suggests ~5% of premium spend is lost to billing errors."
       />
 
       <section aria-label="Savings summary" className="mb-14 grid grid-cols-2 border-y border-ink lg:grid-cols-4">
@@ -229,7 +229,7 @@ export function SavingsView() {
               {rows.length === 0 && (
                 <tr>
                   <td colSpan={8} className="py-10 text-center text-neutral-500">
-                    Nothing here. Bobby will flag new discrepancies after tonight&apos;s reconciliation.
+                    Nothing here. Keel will flag new discrepancies after tonight&apos;s reconciliation.
                   </td>
                 </tr>
               )}

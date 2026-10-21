@@ -501,7 +501,7 @@ export function Segmented<T extends string>({
   );
 }
 
-/** Pulsing "Bobby is working" dot. */
+/** Pulsing "Keel is working" dot. */
 export function WorkingDot({ dark, className }: { dark?: boolean; className?: string }) {
   return (
     <span aria-hidden className={cn("relative inline-flex size-2", className)}>

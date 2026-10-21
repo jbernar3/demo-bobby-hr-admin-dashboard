@@ -88,9 +88,9 @@ export const employees: Employee[] = [
   e({ id: "e03", first: "Rafael", last: "Santos", title: "Chief Revenue Officer", dept: "Leadership", state: "CA", city: "San Francisco", hired: "2024-02-12", med: ["ppo500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Isabel Santos", "1980-06-30"), child("Tomás Santos", "2010-11-11")] }),
 
   // ── Engineering ──────────────────────────────────────────────
-  // Story: dependent child turned 26 on Sept 12, 2026; still billed at Family.
-  e({ id: "e04", first: "Jordan", last: "Kim", title: "Director of Engineering", dept: "Engineering", state: "WA", city: "Seattle", hired: "2023-01-09", med: ["ppo1500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Min-ji Kim", "1974-04-02"), child("Daniel Kim", "2000-09-12")] }),
-  // Story: baby born Oct 8, 2026. Child not yet added (pending life event).
+  // Story: dependent child turned 26 on May 12, 2026; still billed at Family.
+  e({ id: "e04", first: "Jordan", last: "Kim", title: "Director of Engineering", dept: "Engineering", state: "WA", city: "Seattle", hired: "2023-01-09", med: ["ppo1500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Min-ji Kim", "1974-04-02"), child("Daniel Kim", "2000-05-12")] }),
+  // Story: baby born Jun 8, 2026. Child not yet added (pending life event).
   e({ id: "e05", first: "Aisha", last: "Mohammed", title: "Staff Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2022-06-13", med: ["ppo500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Omar Mohammed", "1991-02-17")] }),
   e({ id: "e06", first: "Wei", last: "Zhang", title: "Senior Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2022-09-06", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e07", first: "Andre", last: "Thompson", title: "Senior Software Engineer", dept: "Engineering", state: "TX", city: "Dallas", hired: "2023-03-20", med: ["ppo1500", "EC"], dental: "EC", vision: "EC", deps: [child("Jalen Thompson", "2014-07-09"), child("Kiara Thompson", "2017-01-25")], prior: [{ until: "2026-03-31", medical: "FAM", dental: "FAM", vision: "FAM" }] }),
@@ -111,25 +111,25 @@ export const employees: Employee[] = [
   e({ id: "e22", first: "Tara", last: "Nguyen", title: "Software Engineer", dept: "Engineering", state: "WA", city: "Seattle", hired: "2025-08-11", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e23", first: "Jonah", last: "Levi", title: "Senior Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2025-10-06", med: ["hdhp3000", "ES"], dental: "ES", vision: "ES", deps: [spouse("Talia Levi", "1993-04-08")] }),
   e({ id: "e24", first: "Yusuf", last: "Demir", title: "Software Engineer", dept: "Engineering", state: "TX", city: "Austin", hired: "2026-04-06", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
-  // New hire, waiting period: eligible Nov 1.
-  e({ id: "e25", first: "Mateo", last: "Rossi", title: "Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2026-10-05" }),
+  // New hire, waiting period: eligible Jul 1.
+  e({ id: "e25", first: "Mateo", last: "Rossi", title: "Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2026-06-05" }),
 
   // ── Product / Design ─────────────────────────────────────────
   // Story: first Oregon employee. Dental deducted in payroll but missing from Brightline invoice.
-  e({ id: "e26", first: "Elena", last: "Vasquez", title: "Product Designer", dept: "Product/Design", state: "OR", city: "Portland", hired: "2026-10-01", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
-  e({ id: "e27", first: "Inês", last: "Duarte", title: "Visual Designer (Part-time)", dept: "Product/Design", state: "NY", city: "New York", hired: "2025-02-03", hours: [22, 22, 21, 23, 24, 23, 22, 23, 22, 22] }),
-  // New hire, waiting period: eligible Nov 1.
-  e({ id: "e28", first: "Zoe", last: "Chen", title: "Product Manager", dept: "Product/Design", state: "NY", city: "New York", hired: "2026-10-13" }),
+  e({ id: "e26", first: "Elena", last: "Vasquez", title: "Product Designer", dept: "Product/Design", state: "OR", city: "Portland", hired: "2026-06-01", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
+  e({ id: "e27", first: "Inês", last: "Duarte", title: "Visual Designer (Part-time)", dept: "Product/Design", state: "NY", city: "New York", hired: "2025-02-03", hours: [22, 22, 21, 23, 24, 23] }),
+  // New hire, waiting period: eligible Jul 1.
+  e({ id: "e28", first: "Zoe", last: "Chen", title: "Product Manager", dept: "Product/Design", state: "NY", city: "New York", hired: "2026-06-13" }),
   e({ id: "e29", first: "Gabriel", last: "Silva", title: "Director of Product", dept: "Product/Design", state: "NY", city: "New York", hired: "2022-05-02", med: ["ppo500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Renata Silva", "1985-09-15"), child("Bia Silva", "2015-02-08")] }),
   e({ id: "e30", first: "Maya", last: "Patel", title: "Senior Product Designer", dept: "Product/Design", state: "CA", city: "San Diego", hired: "2023-10-02", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e31", first: "Ella", last: "Johansson", title: "Product Manager", dept: "Product/Design", state: "MA", city: "Cambridge", hired: "2024-07-22", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
-  // Completed life event: married Aug 15, 2026, spouse added Sept 1.
-  e({ id: "e32", first: "Kenji", last: "Watanabe", title: "UX Researcher", dept: "Product/Design", state: "NY", city: "New York", hired: "2024-11-04", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Hana Watanabe", "1995-03-27", "2026-09-01")], prior: [{ until: "2026-08-31", medical: "EE", dental: "EE", vision: "EE" }] }),
+  // Completed life event: married Apr 15, 2026, spouse added May 1.
+  e({ id: "e32", first: "Kenji", last: "Watanabe", title: "UX Researcher", dept: "Product/Design", state: "NY", city: "New York", hired: "2024-11-04", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Hana Watanabe", "1995-03-27", "2026-05-01")], prior: [{ until: "2026-04-30", medical: "EE", dental: "EE", vision: "EE" }] }),
 
   // ── Sales ────────────────────────────────────────────────────
-  // Story: payroll deducts EE+Child since July; Meridian still bills EE-only (underbilled).
-  e({ id: "e33", first: "Greg", last: "Novak", title: "Sales Engineer", dept: "Sales", state: "CO", city: "Denver", hired: "2023-06-05", med: ["ppo1500", "EC"], dental: "EC", vision: "EE", deps: [child("Lily Novak", "2015-03-04", "2026-07-01")], prior: [{ until: "2026-06-30", medical: "EE", dental: "EE" }] }),
-  e({ id: "e34", first: "Caleb", last: "Ross", title: "Sales Development Rep (Part-time)", dept: "Sales", state: "CO", city: "Boulder", hired: "2025-06-16", hours: [19, 20, 20, 21, 22, 21, 20, 21, 20, 20] }),
+  // Story: payroll deducts EE+Child since March; Meridian still bills EE-only (underbilled).
+  e({ id: "e33", first: "Greg", last: "Novak", title: "Sales Engineer", dept: "Sales", state: "CO", city: "Denver", hired: "2023-06-05", med: ["ppo1500", "EC"], dental: "EC", vision: "EE", deps: [child("Lily Novak", "2015-03-04", "2026-03-01")], prior: [{ until: "2026-02-28", medical: "EE", dental: "EE" }] }),
+  e({ id: "e34", first: "Caleb", last: "Ross", title: "Sales Development Rep (Part-time)", dept: "Sales", state: "CO", city: "Boulder", hired: "2025-06-16", hours: [19, 20, 20, 21, 22, 21] }),
   e({ id: "e35", first: "Brianna", last: "Lewis", title: "Account Executive", dept: "Sales", state: "NY", city: "New York", hired: "2023-09-18", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e36", first: "Victor", last: "Alvarez", title: "Account Executive", dept: "Sales", state: "TX", city: "Houston", hired: "2024-05-06", med: ["ppo500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Carmen Alvarez", "1986-12-01"), child("Sebastián Alvarez", "2012-10-17"), child("Valeria Alvarez", "2016-04-04")] }),
   e({ id: "e37", first: "Jasmine", last: "Wright", title: "Account Executive", dept: "Sales", state: "NJ", city: "Jersey City", hired: "2024-08-12", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
@@ -139,29 +139,29 @@ export const employees: Employee[] = [
 
   // ── Customer Success ─────────────────────────────────────────
   // Story: part-time, trending above 30 hrs/week.
-  e({ id: "e41", first: "Sam", last: "Whitaker", title: "Support Specialist (Part-time)", dept: "Customer Success", state: "TX", city: "Austin", hired: "2025-03-17", hours: [24, 25, 26, 27, 28, 29, 31, 31.5, 30.5, 32] }),
+  e({ id: "e41", first: "Sam", last: "Whitaker", title: "Support Specialist (Part-time)", dept: "Customer Success", state: "TX", city: "Austin", hired: "2025-03-17", hours: [26, 27, 29, 30.5, 31, 32] }),
   e({ id: "e42", first: "Leah", last: "Cohen", title: "Customer Success Lead", dept: "Customer Success", state: "NY", city: "New York", hired: "2023-07-10", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("David Cohen", "1988-01-29")] }),
   e({ id: "e43", first: "Marisol", last: "Ortiz", title: "Customer Success Manager", dept: "Customer Success", state: "IL", city: "Chicago", hired: "2024-10-14", med: ["ppo1500", "EC"], dental: "EC", vision: "EC", deps: [child("Ana Ortiz", "2020-06-12")] }),
   e({ id: "e44", first: "Tyrone", last: "Jackson", title: "Implementation Specialist", dept: "Customer Success", state: "NY", city: "New York", hired: "2025-07-07", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
-  e({ id: "e45", first: "Nina", last: "Kowalski", title: "Customer Success Manager", dept: "Customer Success", state: "WA", city: "Seattle", hired: "2026-07-13", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
+  e({ id: "e45", first: "Nina", last: "Kowalski", title: "Customer Success Manager", dept: "Customer Success", state: "WA", city: "Seattle", hired: "2026-03-13", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
 
   // ── Ops / Finance / People ───────────────────────────────────
   e({ id: "e46", first: "Dana", last: "Okafor", title: "Head of People", dept: "Ops/Finance/People", state: "NY", city: "New York", hired: "2023-02-13", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e47", first: "Ben", last: "Adler", title: "Controller", dept: "Ops/Finance/People", state: "NJ", city: "Jersey City", hired: "2023-11-06", med: ["ppo500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Miriam Adler", "1983-05-05")] }),
-  e({ id: "e48", first: "Grace", last: "Liu", title: "Recruiting Coordinator (Part-time)", dept: "Ops/Finance/People", state: "NJ", city: "Hoboken", hired: "2025-05-05", hours: [22, 22, 24, 23, 25, 24, 22, 23, 24, 24] }),
+  e({ id: "e48", first: "Grace", last: "Liu", title: "Recruiting Coordinator (Part-time)", dept: "Ops/Finance/People", state: "NJ", city: "Hoboken", hired: "2025-05-05", hours: [22, 22, 24, 23, 25, 24] }),
   e({ id: "e49", first: "Kayla", last: "Johnson", title: "Finance Associate", dept: "Ops/Finance/People", state: "FL", city: "Miami", hired: "2024-12-02", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "e50", first: "Lucía", last: "Romero", title: "Operations Manager", dept: "Ops/Finance/People", state: "NY", city: "New York", hired: "2023-12-04", med: ["ppo1500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Andrés Romero", "1987-08-08"), child("Camila Romero", "2019-03-03")] }),
 
   // ── Terminated in 2026 ───────────────────────────────────────
-  // Story: terminated Aug 28; still billed by Meridian and Brightline for Sept + Oct.
-  e({ id: "t01", first: "Marcus", last: "Bell", title: "Account Executive", dept: "Sales", state: "NY", city: "New York", hired: "2023-03-06", terminated: "2026-08-28", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Tanya Bell", "1990-02-11")] }),
-  // Story: terminated Sept 30; COBRA election notice not yet sent (due Nov 13).
-  e({ id: "t02", first: "Priya", last: "Raman", title: "Senior Software Engineer", dept: "Engineering", state: "NJ", city: "Edison", hired: "2022-10-03", terminated: "2026-09-30", med: ["ppo500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Vikram Raman", "1986-11-20"), child("Anika Raman", "2017-08-14"), child("Rohan Raman", "2021-02-02")] }),
+  // Story: terminated Apr 28; still billed by Meridian and Brightline for May + Jun.
+  e({ id: "t01", first: "Marcus", last: "Bell", title: "Account Executive", dept: "Sales", state: "NY", city: "New York", hired: "2023-03-06", terminated: "2026-04-28", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Tanya Bell", "1990-02-11")] }),
+  // Story: terminated May 31; COBRA election notice not yet sent (due Jul 14).
+  e({ id: "t02", first: "Priya", last: "Raman", title: "Senior Software Engineer", dept: "Engineering", state: "NJ", city: "Edison", hired: "2022-10-03", terminated: "2026-05-31", med: ["ppo500", "FAM"], dental: "FAM", vision: "FAM", deps: [spouse("Vikram Raman", "1986-11-20"), child("Anika Raman", "2017-08-14"), child("Rohan Raman", "2021-02-02")] }),
   e({ id: "t03", first: "Tyler", last: "Brooks", title: "Account Executive", dept: "Sales", state: "NY", city: "New York", hired: "2024-01-22", terminated: "2026-02-13", med: ["ppo1500", "ES"], dental: "ES", vision: "ES", deps: [spouse("Megan Brooks", "1992-09-09")] }),
   e({ id: "t04", first: "Rebecca", last: "Stone", title: "Account Executive", dept: "Sales", state: "NY", city: "New York", hired: "2024-04-01", terminated: "2026-03-20", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
   e({ id: "t05", first: "Kofi", last: "Mensah", title: "Software Engineer", dept: "Engineering", state: "NY", city: "New York", hired: "2023-10-16", terminated: "2026-05-08", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
-  e({ id: "t06", first: "Olivia", last: "Grant", title: "Customer Success Manager", dept: "Customer Success", state: "IL", city: "Chicago", hired: "2024-03-04", terminated: "2026-06-12", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
-  e({ id: "t07", first: "Lauren", last: "Price", title: "Product Designer", dept: "Product/Design", state: "CA", city: "San Francisco", hired: "2024-05-13", terminated: "2026-07-24", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
+  e({ id: "t06", first: "Olivia", last: "Grant", title: "Customer Success Manager", dept: "Customer Success", state: "IL", city: "Chicago", hired: "2024-03-04", terminated: "2026-03-12", med: ["hdhp3000", "EE"], dental: "EE", vision: "EE" }),
+  e({ id: "t07", first: "Lauren", last: "Price", title: "Product Designer", dept: "Product/Design", state: "CA", city: "San Francisco", hired: "2024-05-13", terminated: "2026-04-24", med: ["ppo1500", "EE"], dental: "EE", vision: "EE" }),
 ];
 
 export const employeeById: Record<string, Employee> = Object.fromEntries(employees.map((x) => [x.id, x]));

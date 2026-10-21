@@ -1,6 +1,6 @@
 import type { ActivityItem } from "@/lib/types";
 
-// What Bobby did overnight, newest first. Approvals Dana makes are prepended at runtime.
+// What Keel did overnight, newest first. Approvals Dana makes are prepended at runtime.
 export const overnightActivity: ActivityItem[] = [
   {
     id: "a1",
@@ -19,13 +19,13 @@ export const overnightActivity: ActivityItem[] = [
     id: "a3",
     at: "3:18 AM",
     text: "Answered 7 employee questions in Slack",
-    detail: "HSA limits (3), OE dates (2), dental ortho (1), ID cards (1)",
+    detail: "HSA limits (3), dental ortho (2), ID cards (1), COBRA (1)",
   },
   {
     id: "a4",
     at: "2:51 AM",
-    text: "Confirmed Part D creditable coverage notices were delivered",
-    detail: "Delivered Oct 9, ahead of the Oct 15 deadline",
+    text: "Confirmed Q2 state paid-leave contributions were remitted",
+    detail: "NY, NJ, CA, CO, WA, and MA are all current",
     href: "/compliance",
   },
   {
@@ -38,14 +38,14 @@ export const overnightActivity: ActivityItem[] = [
   {
     id: "a6",
     at: "1:47 AM",
-    text: "Staged 2027 open enrollment packet",
-    detail: "3 SBCs, rate sheet, and decision guide, ready for your approval",
-    href: "/enrollment",
+    text: "Drafted 2027 medical renewal options",
+    detail: "Renegotiate, level plan, or switch carriers, ready to review with Marco",
+    href: "/plan",
   },
   {
     id: "a7",
     at: "Yesterday 4:12 AM",
-    text: "Reconciled 4 carrier invoices against payroll (Oct)",
+    text: "Reconciled 4 carrier invoices against payroll (Jun)",
     detail: "New: Jordan Kim age-out, Elena Vasquez missing from Brightline, Greg Novak underbilled",
     href: "/savings",
   },

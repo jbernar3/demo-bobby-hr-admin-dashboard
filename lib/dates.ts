@@ -1,10 +1,10 @@
 import type { ISODate } from "./types";
 
 /** The demo is frozen on this day. Never use `new Date()` for "now". */
-export const DEMO_TODAY: ISODate = "2026-10-20";
+export const DEMO_TODAY: ISODate = "2026-06-23";
 
-/** When Bobby last reconciled carrier invoices. */
-export const LAST_RECONCILIATION = { date: "2026-10-19" as ISODate, time: "4:12 AM" };
+/** When Keel last reconciled carrier invoices. */
+export const LAST_RECONCILIATION = { date: "2026-06-22" as ISODate, time: "4:12 AM" };
 
 const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 const MONTHS_LONG = [
@@ -57,19 +57,19 @@ export function parts(iso: ISODate) {
   return { y, m, d };
 }
 
-/** "Oct 20" */
+/** "Jun 23" */
 export function fmtShort(iso: ISODate): string {
   const { m, d } = parts(iso);
   return `${MONTHS[m - 1]} ${d}`;
 }
 
-/** "Oct 20, 2026" */
+/** "Jun 23, 2026" */
 export function fmtDate(iso: ISODate): string {
   const { y, m, d } = parts(iso);
   return `${MONTHS[m - 1]} ${d}, ${y}`;
 }
 
-/** "Tue, Oct 20, 2026" */
+/** "Tue, Jun 23, 2026" */
 export function fmtLong(iso: ISODate): string {
   const wd = WEEKDAYS[new Date(toUTC(iso)).getUTCDay()];
   return `${wd}, ${fmtDate(iso)}`;

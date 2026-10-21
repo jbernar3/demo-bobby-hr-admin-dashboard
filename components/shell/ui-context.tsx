@@ -6,7 +6,7 @@ interface UIState {
   paletteOpen: boolean;
   setPaletteOpen: (open: boolean) => void;
   askOpen: boolean;
-  /** Open the Ask Bobby panel, optionally asking a question right away. */
+  /** Open the Ask Keel panel, optionally asking a question right away. */
   openAsk: (question?: string) => void;
   closeAsk: () => void;
   /** A question queued by the palette or a button, consumed by the panel. */

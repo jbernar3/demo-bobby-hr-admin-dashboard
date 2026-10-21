@@ -118,7 +118,7 @@ function FindingBody({ f }: { f: Finding }) {
           </table>
         </div>
         <p className="mt-2 text-[12px] text-neutral-500">
-          Highlighted cells disagree with HRIS eligibility, Bobby&apos;s source of truth.
+          Highlighted cells disagree with HRIS eligibility, Keel&apos;s source of truth.
           {emp.terminationDate && ` Terminated ${fmtDate(emp.terminationDate)}.`}
         </p>
       </section>
@@ -129,14 +129,14 @@ function FindingBody({ f }: { f: Finding }) {
             <Check className="size-4" aria-hidden /> Credit applied {f.resolvedOn ? `on ${fmtDate(f.resolvedOn)}` : ""}
           </p>
           <p className="mt-1 text-[13.5px] text-neutral-600">
-            Bobby detected this on {fmtDate(f.detectedOn)}, requested the credit, and verified it on the following invoice.
+            Keel detected this on {fmtDate(f.detectedOn)}, requested the credit, and verified it on the following invoice.
           </p>
         </section>
       ) : (
         <section aria-labelledby="email-title">
           <div className="mb-3 flex items-center justify-between">
             <h3 id="email-title" className="text-[12px] font-bold uppercase tracking-[0.12em]">
-              Bobby-drafted {f.type === "Missing from invoice" || f.type === "Underbilled" ? "correction" : "credit request"}
+              Keel-drafted {f.type === "Missing from invoice" || f.type === "Underbilled" ? "correction" : "credit request"}
             </h3>
             {!approvedAt && <span className="text-[12px] text-neutral-500">Editable</span>}
           </div>
@@ -176,7 +176,7 @@ function FindingBody({ f }: { f: Finding }) {
                   onClick={() => {
                     if (!f.actionId) return;
                     approve(f.actionId);
-                    toast(action?.toast ?? "Done. Bobby sent it.");
+                    toast(action?.toast ?? "Done. Keel sent it.");
                   }}
                 >
                   <Check className="size-4" aria-hidden /> Approve &amp; send

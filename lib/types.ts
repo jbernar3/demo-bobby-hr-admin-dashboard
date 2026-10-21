@@ -1,4 +1,4 @@
-// Shared domain types for the Bobby demo. All data is fictitious.
+// Shared domain types for the Keel demo. All data is fictitious.
 
 export type ISODate = string; // "YYYY-MM-DD"
 
@@ -130,7 +130,7 @@ export interface Finding {
 }
 
 export type ComplianceStatus = "Done" | "Due soon" | "Overdue" | "Needs info" | "Not required";
-export type Owner = "Bobby" | "Dana" | "Advisor";
+export type Owner = "Keel" | "Dana" | "Advisor";
 
 export interface ComplianceItem {
   id: string;
@@ -159,7 +159,7 @@ export interface ComplianceItem {
 
 export interface CaseEvent {
   at: string; // "YYYY-MM-DD HH:mm"
-  actor: "Bobby" | "Marco" | "Carrier" | "Dana";
+  actor: "Keel" | "Marco" | "Carrier" | "Dana";
   channel: "Call" | "Email" | "Portal" | "Note" | "Slack";
   summary: string;
 }
@@ -170,7 +170,7 @@ export interface CarrierCase {
   carrierId: CarrierId;
   employeeId?: string;
   openedOn: ISODate;
-  owner: "Bobby" | "Marco";
+  owner: "Keel" | "Marco";
   status: "Waiting on carrier" | "In progress" | "Escalated" | "Resolved";
   nextStep: string;
   events: CaseEvent[];

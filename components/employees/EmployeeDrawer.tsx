@@ -53,8 +53,8 @@ function EmployeeBody({ e }: { e: Employee }) {
       {flags.length > 0 && (
         <section aria-labelledby="flags-title" className="surface-dark rounded-[6px] bg-ink p-5 text-paper">
           <h3 id="flags-title" className="mb-3 flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.12em] text-neutral-400">
-            <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-paper text-[11px] font-black text-ink" aria-hidden>B</span>
-            Bobby flags
+            <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-paper text-[11px] font-black text-ink" aria-hidden>K</span>
+            Keel flags
           </h3>
           <ul className="space-y-3">
             {flags.map((f) => (

@@ -3,15 +3,16 @@
 import { ArrowRight, FileText, Mail, MessageSquare, Phone, StickyNote } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useState } from "react";
 import { advisor } from "@/data/company";
 import { cases } from "@/data/cases";
 import { employeeById, fullName } from "@/data/employees";
 import { carriers } from "@/data/plans";
 import { DEMO_TODAY, daysBetween, fmtDate, fmtShort } from "@/lib/dates";
-import { cn } from "@/lib/format";
+import { cn, plural } from "@/lib/format";
 import { demoToast } from "@/lib/store";
 import type { CarrierCase, CaseEvent } from "@/lib/types";
-import { Avatar, Badge, Button, Drawer, PageHeader, Status } from "../ui";
+import { Avatar, Badge, Button, Drawer, PageHeader, Segmented, Status } from "../ui";
 
 const CHANNEL_ICON: Record<CaseEvent["channel"], typeof Phone> = {
   Call: Phone,
@@ -37,11 +38,15 @@ function Owner({ owner }: { owner: CarrierCase["owner"] }) {
     </span>
   ) : (
     <span className="inline-flex items-center gap-2">
-      <span className="inline-flex size-[22px] items-center justify-center rounded-[3px] bg-ink text-[11px] font-black text-paper" aria-hidden>B</span>
-      Bobby
+      <span className="inline-flex size-[22px] items-center justify-center rounded-[3px] bg-ink text-[11px] font-black text-paper" aria-hidden>K</span>
+      Keel
     </span>
   );
 }
+
+type CaseFilter = "open" | "resolved" | "all";
+
+const closedOn = (c: CarrierCase) => c.events[c.events.length - 1].at;
 
 export function CasesView() {
   const router = useRouter();
@@ -51,10 +56,18 @@ export function CasesView() {
   const open = (id: string | null) => router.replace(id ? `${pathname}?case=${id}` : pathname, { scroll: false });
 
   const openCases = cases.filter((c) => c.status !== "Resolved");
-  const actions = cases.reduce((s, c) => s + c.events.filter((e) => e.actor === "Bobby").length, 0);
-  const calls = cases.reduce((s, c) => s + c.events.filter((e) => e.actor === "Bobby" && e.channel === "Call").length, 0);
+  const actions = cases.reduce((s, c) => s + c.events.filter((e) => e.actor === "Keel").length, 0);
+  const calls = cases.reduce((s, c) => s + c.events.filter((e) => e.actor === "Keel" && e.channel === "Call").length, 0);
 
-  const sorted = [...cases].sort((a, b) => Number(a.status === "Resolved") - Number(b.status === "Resolved") || age(b) - age(a));
+  const [filter, setFilter] = useState<CaseFilter>("open");
+  const resolvedCount = cases.length - openCases.length;
+  const sorted = cases
+    .filter((c) => filter === "all" || (filter === "resolved") === (c.status === "Resolved"))
+    .sort((a, b) =>
+      a.status === "Resolved" && b.status === "Resolved"
+        ? closedOn(b).localeCompare(closedOn(a))
+        : Number(a.status === "Resolved") - Number(b.status === "Resolved") || age(b) - age(a),
+    );
 
   return (
     <div>
@@ -65,8 +78,24 @@ export function CasesView() {
             <span className="num tracking-[-0.07em]">{openCases.length}</span> open cases. Zero on hold for you.
           </>
         }
-        sub={`Bobby and ${advisor.name} work carrier issues end to end. That's ${actions} actions taken so far, including ${calls} phone calls you didn't have to make.`}
+        sub={`Keel and ${advisor.name} work carrier issues end to end. That's ${actions} actions taken so far, including ${calls} phone calls you didn't have to make.`}
       />
+
+      <div className="mb-4 flex items-center justify-between">
+        <Segmented<CaseFilter>
+          label="Filter cases"
+          value={filter}
+          onChange={setFilter}
+          options={[
+            { value: "open", label: `Open (${openCases.length})` },
+            { value: "resolved", label: `Resolved (${resolvedCount})` },
+            { value: "all", label: "All" },
+          ]}
+        />
+        {filter === "open" && resolvedCount > 0 && (
+          <span className="text-[12.5px] text-neutral-500">{plural(resolvedCount, "resolved case")} hidden</span>
+        )}
+      </div>
 
       <div className="scroll-thin overflow-x-auto border-t border-ink">
         <table className="w-full min-w-[980px] text-[14px]">
@@ -135,6 +164,11 @@ export function CasesView() {
             <div className="flex gap-2">
               <Button variant="primary" onClick={() => demoToast("Messaging the case owner")}>Message {selected.owner}</Button>
               <Button onClick={() => demoToast("Adding a note")}>Add a note</Button>
+              {selected.owner === "Marco" ? (
+                <Button disabled className="ml-auto">With Marco</Button>
+              ) : (
+                <Button className="ml-auto" onClick={() => demoToast("Escalating to Marco")}>Escalate to Marco</Button>
+              )}
             </div>
           ) : undefined
         }
@@ -179,7 +213,7 @@ export function CasesView() {
                     <span
                       className={cn(
                         "absolute -left-[37px] top-0 inline-flex size-[26px] items-center justify-center rounded-full border",
-                        ev.actor === "Bobby" ? "border-ink bg-ink text-paper" : "border-neutral-300 bg-paper text-ink",
+                        ev.actor === "Keel" ? "border-ink bg-ink text-paper" : "border-neutral-300 bg-paper text-ink",
                       )}
                       aria-hidden
                     >

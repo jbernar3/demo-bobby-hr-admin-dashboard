@@ -36,7 +36,7 @@ export function Sidebar() {
 
   const carrierCount = Object.keys(carriers).length - 1; // Keystone is an administrator, not a carrier
   const ticker = useTicker([
-    "Reconciling Oct invoices",
+    "Reconciling Jun invoices",
     `Monitoring ${carrierCount} carriers`,
     `Tracking ${m.openCases} open cases`,
     "Checking eligibility rules",
@@ -57,7 +57,7 @@ export function Sidebar() {
       >
         <div className="flex items-center justify-between px-6 pb-8 pt-6">
           <Link href="/" className="text-[30px] font-black leading-none tracking-[-0.06em]" onClick={() => setNavOpen(false)}>
-            Bobby
+            Keel
           </Link>
           <button
             type="button"

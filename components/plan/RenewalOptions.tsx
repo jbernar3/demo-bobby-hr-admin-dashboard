@@ -45,7 +45,7 @@ export function RenewalOptions() {
             <span className="hidden items-center gap-2 text-[12px] text-neutral-600 sm:flex">
               <WorkingDot /> Updated 4 min ago
             </span>
-            <Badge tone="muted">Bobby estimates · medical only</Badge>
+            <Badge tone="muted">Keel estimates · medical only</Badge>
           </span>
         }>
         2027 renewal: current plan vs. options
@@ -58,7 +58,7 @@ export function RenewalOptions() {
           <p className="num mt-6 text-[34px] font-bold leading-none tracking-[-0.05em]">{money(current)}</p>
           <p className="num mt-1 text-[12.5px] text-neutral-400">per year · {money(current / 12)}/mo</p>
           <ul className="mt-5 space-y-2 text-[13px] leading-snug text-neutral-300">
-            <li>Rates are flat for 2027</li>
+            <li>Renewal proposal expected this summer</li>
             <li>Surplus is partly refunded after run-out</li>
           </ul>
         </article>
@@ -66,6 +66,7 @@ export function RenewalOptions() {
         {renewalOptions.map((o, idx) => {
           const low = current * (1 + o.range[0]);
           const high = current * (1 + o.range[1]);
+          const saving = Math.round((current - (low + high) / 2) / 100) * 100;
           return (
             <article key={o.id} className="flex flex-col rounded-[6px] border border-ink p-6">
               <p className="text-[12px] font-semibold uppercase tracking-[0.12em] text-neutral-500">{o.label}</p>
@@ -76,6 +77,15 @@ export function RenewalOptions() {
               </p>
               <p className="num mt-1 text-[12.5px] text-neutral-500">
                 per year · {pct(o.range[0])} to {pct(o.range[1])} vs. current
+              </p>
+              <p
+                className={
+                  saving > 0
+                    ? "num mt-4 inline-flex w-fit items-center rounded-[4px] bg-green-50 px-2.5 py-1 text-[13px] font-semibold text-green-800 ring-1 ring-green-200"
+                    : "num mt-4 inline-flex w-fit items-center rounded-[4px] bg-neutral-100 px-2.5 py-1 text-[13px] font-semibold text-neutral-700"
+                }
+              >
+                {saving > 0 ? `Saves ~${moneyK(saving)}/yr` : `Costs ~${moneyK(-saving)}/yr more`}
               </p>
               <ul className="mt-5 space-y-2 text-[13px] leading-snug text-neutral-700">
                 {o.points.map((p) => (
