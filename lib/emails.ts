@@ -1,4 +1,4 @@
-import { advisor, company, user } from "@/data/company";
+import { advisor, company, platform, user } from "@/data/company";
 import { employeeById, fullName } from "@/data/employees";
 import { carriers, TIER_LABEL } from "@/data/plans";
 import { findingImpact, hrisTier, rateFor } from "./billing";
@@ -24,7 +24,7 @@ export function draftEmail(f: Finding) {
       return `  • ${monthLabelLong(ym)}: billed ${f.billedTier ? TIER_LABEL[f.billedTier] : "not billed"} (${money(rateFor(emp, f.line, f.billedTier), { cents: true })}), ${correct ? `should be ${TIER_LABEL[correct]} (${money(rateFor(emp, f.line, correct), { cents: true })})` : "should not be billed"}`;
     })
     .join("\n");
-  const sign = `Thanks,\nKeel, on behalf of ${user.name} (${user.title})\n${company.name} · Group benefits\ncc: ${advisor.name}, ${advisor.title}`;
+  const sign = `Thanks,\n${platform.name}, on behalf of ${user.name} (${user.title})\n${company.name} · Group benefits\ncc: ${advisor.name}, ${advisor.title}`;
 
   switch (f.type) {
     case "Ghost enrollee":

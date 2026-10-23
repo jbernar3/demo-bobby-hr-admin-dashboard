@@ -6,9 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "slack": "tsx --env-file=.env.local --tsconfig tsconfig.json slack-bot/index.ts",
+    "slack:nudge": "tsx --env-file=.env.local --tsconfig tsconfig.json slack-bot/send-nudge.ts",
+    "slack:clear": "tsx --env-file=.env.local --tsconfig tsconfig.json slack-bot/clear.ts"
   },
   "dependencies": {
+    "@slack/bolt": "^4.7.3",
     "framer-motion": "^14.4.0",
     "geist": "^1.8.1",
     "lucide-react": "^1.59.0",
@@ -24,6 +28,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
+    "tsx": "^4.23.15",
     "typescript": "^5"
   }
 }

@@ -1,4 +1,5 @@
 import type { Carrier, CarrierId, MedicalPlan, Tier } from "@/lib/types";
+import { platform } from "./company";
 
 export const carriers: Record<CarrierId, Carrier> = {
   meridian: { id: "meridian", name: "Meridian Health", shortName: "Meridian", line: "Medical (level-funded)" },
@@ -100,7 +101,7 @@ export const LIFE_RATE_PER_EMPLOYEE =
 export const accountsAdmin = {
   hsa: "Employer seeds $500 (EE) / $1,000 (with dependents) per year",
   fsa: "Healthcare FSA up to IRS limit; Dependent Care FSA",
-  cobra: "Keystone Admin issues COBRA notices on Keel's instruction",
+  cobra: `Keystone Admin issues COBRA notices on ${platform.name}'s instruction`,
 };
 
 /** 2027 medical options Keel is weighing. Ranges are Keel estimates, as a change vs. the current annual medical premium. */
@@ -110,10 +111,10 @@ export const renewalOptions = [
     label: "Renegotiate",
     provider: "Meridian Health",
     structure: "Level-funded, same plans",
-    range: [-0.06, -0.02] as [number, number],
+    range: [-0.18, -0.14] as [number, number],
     live: ["Drafting counter-proposal", "Pulling claims experience", "Benchmarking admin fee"],
     points: [
-      "Claims are running under the fund, which supports asking for a lower admin fee or stop-loss rate",
+      "Claims are running well under the fund, which supports a lower stop-loss rate and admin fee",
       "Lowest effort. Employees see no change",
     ],
   },
@@ -122,10 +123,10 @@ export const renewalOptions = [
     label: "Level plan",
     provider: "Meridian Health",
     structure: "Fixed premium, fully insured",
-    range: [0.01, 0.03] as [number, number],
+    range: [-0.17, -0.13] as [number, number],
     live: ["Requesting rate guarantee terms", "Modeling surplus given up", "Comparing risk charge"],
     points: [
-      "Same price every month with a 12-month rate guarantee",
+      "Same price every month with a 12-month rate guarantee, priced off a clean claims year",
       "Meridian carries the claims risk, so there is no surplus refund",
     ],
   },
@@ -134,10 +135,10 @@ export const renewalOptions = [
     label: "Different provider",
     provider: "2 competing quotes",
     structure: "New carrier, new networks",
-    range: [-0.08, 0.04] as [number, number],
+    range: [-0.24, -0.14] as [number, number],
     live: ["Quote 1 of 2 received", "Checking network overlap", "Matching plan designs"],
     points: [
-      "Widest range: could beat Meridian, could cost more",
+      "Biggest potential saving, and the widest range: both quotes undercut Meridian",
       "Employees may change doctors and re-enroll, and a new carrier means a new claims history",
     ],
   },

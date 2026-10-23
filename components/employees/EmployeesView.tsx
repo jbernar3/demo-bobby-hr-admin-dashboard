@@ -13,6 +13,7 @@ import { PageHeader, Segmented } from "../ui";
 import { EmployeeDrawer } from "./EmployeeDrawer";
 import { medicalLabel } from "./labels";
 import { FilterMenu } from "./FilterMenu";
+import { platform } from "@/data/company";
 
 type SortKey = "name" | "title" | "department" | "state" | "type" | "medical" | "dental" | "vision" | "status" | "flags";
 
@@ -44,6 +45,7 @@ export function EmployeesView() {
   const [depts, setDepts] = useState<string[]>([]);
   const [enrolled, setEnrolled] = useState<"all" | "enrolled" | "not">("all");
   const [type, setType] = useState<"all" | "Full-time" | "Part-time">("all");
+  const [flagged, setFlagged] = useState<"all" | "flagged" | "urgent">("all");
   const [showTerminated, setShowTerminated] = useState(false);
   const [sort, setSort] = useState<{ key: SortKey; dir: 1 | -1 }>({ key: "flags", dir: 1 });
 
@@ -60,6 +62,11 @@ export function EmployeesView() {
       .filter((e) => depts.length === 0 || depts.includes(e.department))
       .filter((e) => enrolled === "all" || (enrolled === "enrolled" ? !!e.coverage.medical : !e.coverage.medical))
       .filter((e) => type === "all" || e.type === type)
+      .filter((e) => {
+        if (flagged === "all") return true;
+        const open = employeeFlags(e, state.done).filter((f) => !f.resolved);
+        return flagged === "urgent" ? open.some((f) => f.urgent) : open.length > 0;
+      })
     .sort((a, b) => {
       // Default view: urgent flags first, then other open flags, then everyone else.
       if (sort.key === "flags") {
@@ -93,7 +100,7 @@ export function EmployeesView() {
     { key: "vision", label: "Vision" },
     { key: "status", label: "Employment Status" },
   ];
-  const filtersOn = query || states.length || depts.length || enrolled !== "all" || type !== "all";
+  const filtersOn = query || states.length || depts.length || enrolled !== "all" || type !== "all" || flagged !== "all";
 
   return (
     <div>
@@ -151,6 +158,16 @@ export function EmployeesView() {
             { value: "Part-time", label: "Part-time" },
           ]}
         />
+        <Segmented
+          label={`${platform.name} flags`}
+          value={flagged}
+          onChange={setFlagged}
+          options={[
+            { value: "all", label: "All" },
+            { value: "flagged", label: `${platform.name} flags` },
+            { value: "urgent", label: "Needs attention" },
+          ]}
+        />
         <label className="ml-auto inline-flex cursor-pointer items-center gap-2 text-[13px] text-neutral-600">
           <input type="checkbox" checked={showTerminated} onChange={(e) => setShowTerminated(e.target.checked)} className="size-4 accent-black" />
           Show terminated
@@ -171,6 +188,7 @@ export function EmployeesView() {
                 setDepts([]);
                 setEnrolled("all");
                 setType("all");
+                setFlagged("all");
               }}
             >
               Clear filters
@@ -268,14 +286,14 @@ function FlagBadge({ employee, done }: { employee: Employee; done: DemoState["do
       }}
       onMouseLeave={() => setPos(null)}
     >
-      K<span className="sr-only">: Keel flag</span>
+      {platform.monogram}<span className="sr-only">: {platform.name} flag</span>
       {pos && (
         <span
           role="tooltip"
           style={{ left: Math.min(pos.x, window.innerWidth - 316), top: pos.y }}
           className={cn("pointer-events-none fixed z-50 w-[300px] rounded-[6px] border-2 bg-paper p-3.5 text-left font-normal normal-case text-ink shadow-[4px_4px_0_0_#000]", urgent ? "border-signal" : "border-amber-400")}
         >
-          <span className={cn("mb-2 block text-[11px] font-bold uppercase tracking-[0.12em]", urgent ? "text-signal-ink" : "text-amber-700")}>{urgent ? "Needs attention" : "Keel flags"}</span>
+          <span className={cn("mb-2 block text-[11px] font-bold uppercase tracking-[0.12em]", urgent ? "text-signal-ink" : "text-amber-700")}>{urgent ? "Needs attention" : `${platform.name} flags`}</span>
           <span className="block space-y-2.5">
             {flags.map((f) => (
               <span key={f.id} className="block">

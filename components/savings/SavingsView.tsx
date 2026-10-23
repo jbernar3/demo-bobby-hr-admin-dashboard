@@ -14,6 +14,7 @@ import { useDemoState } from "@/lib/store";
 import type { Finding, FindingStatus } from "@/lib/types";
 import { CountUp, PageHeader, SectionTitle, Segmented, Status, WorkingDot } from "../ui";
 import { FindingDrawer } from "./FindingDrawer";
+import { platform } from "@/data/company";
 
 type CellStatus = "Matched" | "Discrepancy" | "Credit pending";
 
@@ -77,7 +78,7 @@ export function SavingsView() {
             recovered.
           </>
         }
-        sub="Keel reconciles every invoice against payroll and your HRIS each month. Industry data suggests ~5% of premium spend is lost to billing errors."
+        sub={`${platform.name} reconciles every invoice against payroll and your HRIS each month. Industry data suggests ~5% of premium spend is lost to billing errors.`}
       />
 
       <section aria-label="Savings summary" className="mb-14 grid grid-cols-2 border-y border-ink lg:grid-cols-4">
@@ -229,7 +230,7 @@ export function SavingsView() {
               {rows.length === 0 && (
                 <tr>
                   <td colSpan={8} className="py-10 text-center text-neutral-500">
-                    Nothing here. Keel will flag new discrepancies after tonight&apos;s reconciliation.
+                    Nothing here. {platform.name} will flag new discrepancies after tonight&apos;s reconciliation.
                   </td>
                 </tr>
               )}

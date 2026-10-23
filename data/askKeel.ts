@@ -7,10 +7,12 @@ import { complianceViews, metrics } from "@/lib/selectors";
 import type { DemoState } from "@/lib/store";
 import type { AnswerBlock } from "@/lib/types";
 import { actions } from "./actions";
-import { advisor, openEnrollment } from "./company";
+import { advisor, openEnrollment, platform } from "./company";
 import { employeeById, employees, fullName, STORY } from "./employees";
 import { findings } from "./findings";
-import { carriers, levelFunded, medicalContribution, TIER_LABEL } from "./plans";
+import { carriers, levelFunded, medicalContribution, medicalPlans, TIER_LABEL } from "./plans";
+
+const DEMO_USER_EMPLOYEE_ID = "e46"; // Dana Okafor
 
 // Scripted Ask Keel answers. Every number is computed from the data modules.
 
@@ -52,6 +54,16 @@ export const ASK_QUESTIONS: AskQuestion[] = [
     question: "Draft the open enrollment announcement for Slack.",
     keywords: [["announcement", "announce", "slack", "draft", "message"], ["open enrollment", "oe", "enrollment"]],
   },
+  {
+    id: "deductible",
+    question: "What is my plan deductible?",
+    keywords: [["deductible", "out of pocket", "out-of-pocket", "oop max", "oop"], ["plan", "my", "what", "how much"]],
+  },
+  {
+    id: "doctor",
+    question: "Is this doctor in my network? profiles.mountsinai.org/mindy-b-satsky",
+    keywords: [["doctor", "dr.", "physician", "provider", "specialist", "in network", "in-network", "in my network", "network"], ["network", "in my", "covered", "http", "www", "zocdoc", ".com"]],
+  },
 ];
 
 export function matchQuestion(text: string): string | null {
@@ -85,6 +97,10 @@ export function answerFor(id: string, done: Done): AnswerBlock[] {
       return levelFundedAnswer();
     case "oe":
       return oeAnswer();
+    case "deductible":
+      return deductibleAnswer();
+    case "doctor":
+      return doctorAnswer();
     default:
       return [{ type: "text", text: FALLBACK_TEXT }];
   }
@@ -95,7 +111,7 @@ function weekAnswer(done: Done): AnswerBlock[] {
   const pending = actions.filter((a) => a.urgency !== "later" && !done[a.id]);
   if (pending.length === 0) {
     return [
-      { type: "text", text: "Nothing needs you this week. You've approved everything Keel proposed. I'll keep watching invoices, deadlines, and thresholds overnight." },
+      { type: "text", text: `Nothing needs you this week. You've approved everything ${platform.name} proposed. I'll keep watching invoices, deadlines, and thresholds overnight.` },
       { type: "action", label: "Back to Today", href: "/" },
     ];
   }
@@ -181,7 +197,7 @@ function oregonAnswer(done: Done): AnswerBlock[] {
     {
       type: "table",
       columns: ["Registration", "Status", "Owner"],
-      rows: or.map((c) => [c.title, c.effectiveStatus === "Done" ? "Filed" : c.effectiveStatus, c.owner]),
+      rows: or.map((c) => [c.title, c.effectiveStatus === "Done" ? "Filed" : c.effectiveStatus, c.owner === "Platform" ? platform.name : c.owner]),
     },
     {
       type: "text",
@@ -189,7 +205,7 @@ function oregonAnswer(done: Done): AnswerBlock[] {
     },
     filed
       ? { type: "action", label: "Registrations filed. View Growth Alerts", href: "/growth" }
-      : { type: "action", label: "Approve: Keel files registrations", actionId: "oregon-registrations" },
+      : { type: "action", label: `Approve: ${platform.name} files registrations`, actionId: "oregon-registrations" },
   ];
 }
 
@@ -230,11 +246,11 @@ Hi team! Open enrollment for 2027 benefits runs Mon, ${fmtShort(openEnrollment.s
 • HSA seed stays at $500 (you) / $1,000 (with dependents)
 
 *What you need to do*
-1. Open Keel and review your options (about 5 minutes)
+1. Open ${platform.name} and review your options (about 5 minutes)
 2. Re-elect your FSA if you want one, because it doesn't roll over
 3. Add or remove dependents if anything changed this year
 
-Questions? DM Keel anytime, or book 15 minutes with ${advisor.name}, our licensed benefits advisor.
+Questions? DM ${platform.name} anytime, or book 15 minutes with ${advisor.name}, our licensed benefits advisor.
 
 _This message goes to all ${eligible} benefits-eligible employees._`;
 }
@@ -244,5 +260,72 @@ function oeAnswer(): AnswerBlock[] {
     { type: "text", text: "Here's a draft for #general. It's friendly, short, and has the dates up top:" },
     { type: "text", text: oeAnnouncement() },
     { type: "action", label: "Approve & post to #general", actionId: "oe-announcement" },
+  ];
+}
+
+// Practice details come from the doctor's public Mount Sinai profile; the network status is scripted.
+// The demo doesn't look the URL up, so every provider link gets this answer.
+function doctorAnswer(): AnswerBlock[] {
+  const me = employeeById[DEMO_USER_EMPLOYEE_ID];
+  const plan = medicalPlans.find((p) => p.id === me.coverage.medical?.plan) ?? medicalPlans[0];
+  return [
+    {
+      type: "text",
+      text: `Yes, Dr. Mindy B. Satsky, MD is in network on your Meridian ${plan.name} plan, and on the other two Meridian medical plans too. Dr. Satsky is an Internal Medicine primary care physician at Mount Sinai Doctors - West 23rd Street.`,
+    },
+    {
+      type: "table",
+      columns: ["Details", ""],
+      rows: [
+        ["Specialty", "Internal Medicine, Primary Care"],
+        ["Practice", "Mount Sinai Doctors - West 23rd Street, 309 W 23rd St, New York, NY 10011"],
+        ["Network", "Meridian Open Access (in network)"],
+        ["Plans accepted", "PPO 500, PPO 1500, HDHP 3000 + HSA"],
+        ["Verified", "Meridian directory, updated Oct 14"],
+      ],
+    },
+    {
+      type: "table",
+      columns: [`Your cost, ${plan.name}`, "Amount"],
+      rows: [
+        ["Primary care visit", `${plan.pcpCopay} copay`],
+        ["Annual deductible", money(plan.deductible)],
+        ["Out-of-pocket max", money(plan.oopMax)],
+      ],
+    },
+    {
+      type: "text",
+      text: "Network status can change, so I'd confirm with the office when you book. I re-check the Meridian directory every month and will flag you if Dr. Satsky leaves the network.",
+    },
+    { type: "action", label: "Open Plan & Costs", href: "/plan" },
+  ];
+}
+
+function deductibleAnswer(): AnswerBlock[] {
+  // Keel knows the asker's coverage; the demo user is Dana, who has employee-only PPO 1500.
+  const me = employeeById[DEMO_USER_EMPLOYEE_ID];
+  const plan = medicalPlans.find((p) => p.id === me.coverage.medical?.plan);
+  if (!plan) return [{ type: "text", text: "I don't see you enrolled in a medical plan right now." }];
+  const tier = TIER_LABEL[me.coverage.medical!.tier];
+  return [
+    {
+      type: "text",
+      text: `Your deductible is ${money(plan.deductible)}. You're on Meridian ${plan.name} (${tier}), and that's what you pay before the plan starts sharing costs.`,
+    },
+    {
+      type: "table",
+      columns: [`Your plan: ${plan.name}`, ""],
+      rows: [
+        ["Deductible", money(plan.deductible)],
+        ["Out-of-pocket max", money(plan.oopMax)],
+        ["Coinsurance after deductible", plan.coinsurance],
+        ["Primary care visit", `${plan.pcpCopay} copay`],
+      ],
+    },
+    {
+      type: "text",
+      text: `Primary care visits are just the copay and don't wait on the deductible. Once you've paid ${money(plan.oopMax)} in a year, the plan covers 100% of in-network care. Open enrollment starts ${fmtShort(openEnrollment.start)} if you want to compare other options.`,
+    },
+    { type: "action", label: "Compare plans", href: "/plan" },
   ];
 }

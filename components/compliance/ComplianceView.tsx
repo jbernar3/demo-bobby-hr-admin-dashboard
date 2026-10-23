@@ -4,7 +4,7 @@ import { ArrowUpRight, CalendarRange, Check, List } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { actionById } from "@/data/actions";
-import { advisor } from "@/data/company";
+import { advisor, platform } from "@/data/company";
 import { employees } from "@/data/employees";
 import { DEMO_TODAY, daysBetween, fmtDate, fmtShort, relativeDue } from "@/lib/dates";
 import { cn, money, plural } from "@/lib/format";
@@ -54,7 +54,7 @@ export function ComplianceView() {
       <PageHeader
         eyebrow="Compliance"
         title="Every deadline, watched."
-        sub="Keel tracks federal, state, and local obligations for Parallax and drafts what's needed. Nothing here is legal advice, and Marco reviews anything that is."
+        sub={`${platform.name} tracks federal, state, and local obligations for Parallax and drafts what's needed. Nothing here is legal advice, and Marco reviews anything that is.`}
       />
 
       {/* ── Score ─────────────────────────────────────────── */}
@@ -74,7 +74,7 @@ export function ComplianceView() {
         <div className="p-6 lg:p-8">
           <p className="mb-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-neutral-500">What&apos;s dragging it down</p>
           {drags.length === 0 ? (
-            <p className="text-[22px] font-bold tracking-[-0.02em]">All clear. Keel will keep watching.</p>
+            <p className="text-[22px] font-bold tracking-[-0.02em]">All clear. {platform.name} will keep watching.</p>
           ) : (
             <ul className="divide-y divide-neutral-200">
               {groupByAction(drags).map((g) => (
@@ -260,11 +260,11 @@ function OwnerChip({ owner }: { owner: Owner }) {
         <Avatar initials={advisor.initials} size={20} /> Marco
       </span>
     );
-  if (owner === "Keel")
+  if (owner === "Platform")
     return (
       <span className="inline-flex items-center gap-1.5 text-[13px]">
-        <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-ink text-[10px] font-black text-paper" aria-hidden>K</span>
-        Keel
+        <span className="inline-flex size-5 items-center justify-center rounded-[3px] bg-ink text-[10px] font-black text-paper" aria-hidden>{platform.monogram}</span>
+        {platform.name}
       </span>
     );
   return (

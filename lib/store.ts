@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useSyncExternalStore } from "react";
+import { platform } from "@/data/company";
 
 // Client-only demo state: which proposals Dana approved or dismissed.
 // Persisted to localStorage when available; every access is wrapped so it can never break rendering.
@@ -126,7 +127,7 @@ export function toast(message: string, tone: Toast["tone"] = "default") {
 }
 
 export function demoToast(what = "This") {
-  toast(`${what} is a demo. In production, Keel would handle it end to end.`, "demo");
+  toast(`${what} is a demo. In production, ${platform.name} would handle it end to end.`, "demo");
 }
 
 export function dismissToast(id: number) {

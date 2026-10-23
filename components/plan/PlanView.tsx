@@ -24,6 +24,7 @@ import type { Tier } from "@/lib/types";
 import { BarChart, LineChart } from "../charts";
 import { RenewalOptions } from "./RenewalOptions";
 import { Badge, CountUp, PageHeader, Reveal, SectionTitle } from "../ui";
+import { platform } from "@/data/company";
 
 function split(rates: Record<Tier, number>, tier: Tier, eePct: number, depPct: number) {
   const employer = rates.EE * eePct + (rates[tier] - rates.EE) * depPct;
@@ -176,7 +177,7 @@ export function PlanView() {
                 {plural(lf.flaggedCount, "claimant")} over 50% of the specific deductible
               </p>
               <p className="mt-1 text-[13px] leading-snug text-neutral-600">
-                Largest is at {Math.round(lf.topPctOfDeductible * 100)}% of {money(levelFunded.specificDeductible)}. Stop-loss pays above that. De-identified: Keel never sees or shows names or conditions.
+                Largest is at {Math.round(lf.topPctOfDeductible * 100)}% of {money(levelFunded.specificDeductible)}. Stop-loss pays above that. De-identified: {platform.name} never sees or shows names or conditions.
               </p>
               <ul className="mt-3 space-y-1.5">
                 {largeClaimants.map((c) => (

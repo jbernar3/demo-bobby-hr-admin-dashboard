@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { carriers } from "@/data/plans";
-import { company, user } from "@/data/company";
+import { company, platform, user } from "@/data/company";
 import { cn } from "@/lib/format";
 import { metrics } from "@/lib/selectors";
 import { resetDemo, toast, useDemoState } from "@/lib/store";
@@ -57,7 +57,7 @@ export function Sidebar() {
       >
         <div className="flex items-center justify-between px-6 pb-8 pt-6">
           <Link href="/" className="text-[30px] font-black leading-none tracking-[-0.06em]" onClick={() => setNavOpen(false)}>
-            Keel
+            {platform.name}
           </Link>
           <button
             type="button"

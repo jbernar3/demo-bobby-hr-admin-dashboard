@@ -5,6 +5,7 @@ import { renewalOptions } from "@/data/plans";
 import { money, moneyK } from "@/lib/format";
 import { levelFundedSummary } from "@/lib/levelFunded";
 import { Badge, SectionTitle, WorkingDot } from "../ui";
+import { platform } from "@/data/company";
 
 function pct(n: number) {
   return `${n > 0 ? "+" : n < 0 ? "−" : ""}${Math.abs(Math.round(n * 100))}%`;
@@ -45,7 +46,7 @@ export function RenewalOptions() {
             <span className="hidden items-center gap-2 text-[12px] text-neutral-600 sm:flex">
               <WorkingDot /> Updated 4 min ago
             </span>
-            <Badge tone="muted">Keel estimates · medical only</Badge>
+            <Badge tone="muted">{platform.name} estimates · medical only</Badge>
           </span>
         }>
         2027 renewal: current plan vs. options

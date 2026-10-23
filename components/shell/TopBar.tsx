@@ -3,7 +3,7 @@
 import { Menu, MessageSquare, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
-import { advisor } from "@/data/company";
+import { advisor, platform } from "@/data/company";
 import { DEMO_TODAY, fmtLong } from "@/lib/dates";
 import { demoToast } from "@/lib/store";
 import { Button, Kbd } from "../ui";
@@ -23,18 +23,18 @@ export function TopBar() {
           <Menu className="size-5" />
         </button>
         <Link href="/" className="mr-2 hidden text-[22px] font-black tracking-[-0.06em] sm:inline lg:hidden">
-          Keel
+          {platform.name}
         </Link>
 
         <button
           type="button"
           onClick={() => setPaletteOpen(true)}
           className="group flex h-10 min-w-0 flex-1 items-center gap-3 rounded-[4px] border border-neutral-300 px-3.5 text-left text-[14px] text-neutral-500 transition-colors duration-150 hover:border-ink md:max-w-[520px]"
-          aria-label="Ask Keel or search (Command K)"
+          aria-label={`Ask ${platform.name} or search (Command K)`}
           aria-haspopup="dialog"
         >
           <Search className="size-4 shrink-0 text-ink" aria-hidden />
-          <span className="flex-1 truncate">Ask Keel or search…</span>
+          <span className="flex-1 truncate">Ask {platform.name} or search…</span>
           <span className="hidden items-center gap-1 sm:flex">
             <Kbd>⌘</Kbd>
             <Kbd>K</Kbd>
@@ -44,9 +44,9 @@ export function TopBar() {
         <div className="ml-auto flex shrink-0 items-center gap-4">
           <span className="num hidden text-[12.5px] text-neutral-500 xl:inline">{fmtLong(DEMO_TODAY)}</span>
           <AdvisorBadge />
-          <Button variant="primary" onClick={() => openAsk()} aria-label="Open Ask Keel panel">
+          <Button variant="primary" onClick={() => openAsk()} aria-label={`Open Ask ${platform.name} panel`}>
             <MessageSquare className="size-4" aria-hidden />
-            <span className="hidden sm:inline">Ask Keel</span>
+            <span className="hidden sm:inline">Ask {platform.name}</span>
           </Button>
         </div>
       </div>

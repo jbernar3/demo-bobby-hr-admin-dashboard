@@ -5,7 +5,7 @@ import { ArrowUp, Check, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { actionById } from "@/data/actions";
-import { advisor } from "@/data/company";
+import { advisor, platform } from "@/data/company";
 import { answerFor, ASK_QUESTIONS, FALLBACK_TEXT, matchQuestion } from "@/data/askKeel";
 import { cn } from "@/lib/format";
 import { approve, demoToast, toast, useDemoState } from "@/lib/store";
@@ -146,7 +146,7 @@ export function AskPanel() {
             ref={panelRef}
             role="dialog"
             aria-modal="true"
-            aria-label="Ask Keel"
+            aria-label={`Ask ${platform.name}`}
             className="absolute inset-y-0 right-0 flex w-full max-w-[480px] flex-col border-l border-ink bg-paper"
             initial={{ x: 40, opacity: 0 }}
             animate={{ x: 0, opacity: 1 }}
@@ -154,7 +154,7 @@ export function AskPanel() {
             transition={{ duration: 0.2, ease: [0.2, 0, 0, 1] }}
           >
             <header className="surface-dark flex items-center gap-3 bg-ink px-6 py-4 text-paper">
-              <span className="text-[22px] font-black tracking-[-0.05em]">Ask Keel</span>
+              <span className="text-[22px] font-black tracking-[-0.05em]">Ask {platform.name}</span>
               <span className="num ml-1 flex items-center gap-2 text-[11.5px] text-neutral-400">
                 <WorkingDot dark />
                 {streaming ? "working" : "ready"}
@@ -162,7 +162,7 @@ export function AskPanel() {
               <button
                 type="button"
                 onClick={closeAsk}
-                aria-label="Close Ask Keel"
+                aria-label={`Close Ask ${platform.name}`}
                 className="ml-auto inline-flex size-8 items-center justify-center rounded-[4px] text-neutral-400 hover:text-paper"
               >
                 <X className="size-5" />
@@ -200,7 +200,7 @@ export function AskPanel() {
                   </li>
                 ))}
                 {thinking && (
-                  <li className="flex items-center gap-2 text-[13px] text-neutral-500" aria-label="Keel is typing">
+                  <li className="flex items-center gap-2 text-[13px] text-neutral-500" aria-label={`${platform.name} is typing`}>
                     <span className="flex gap-1" aria-hidden>
                       {[0, 1, 2].map((i) => (
                         <span key={i} className="size-1.5 animate-pulse-dot rounded-full bg-ink" style={{ animationDelay: `${i * 0.16}s` }} />
@@ -245,7 +245,7 @@ export function AskPanel() {
             >
               <div className="flex items-center gap-2 rounded-[4px] border border-neutral-300 pl-3.5 pr-1.5 focus-within:border-ink">
                 <label htmlFor="ask-input" className="sr-only">
-                  Ask Keel a question
+                  Ask {platform.name} a question
                 </label>
                 <input
                   id="ask-input"

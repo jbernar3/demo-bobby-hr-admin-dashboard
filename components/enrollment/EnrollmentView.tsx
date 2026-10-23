@@ -4,7 +4,7 @@ import { Check, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { actionById } from "@/data/actions";
-import { openEnrollment } from "@/data/company";
+import { openEnrollment, platform } from "@/data/company";
 import { employeeById, employees, fullName } from "@/data/employees";
 import { lifeEvents, newHires, nudgeMessage, oeStatusById } from "@/data/enrollment";
 import { addDays, DEMO_TODAY, daysBetween, daysFromToday, fmtDate, fmtShort, relativeDue } from "@/lib/dates";
@@ -39,7 +39,7 @@ export function EnrollmentView() {
 
   return (
     <div>
-      <PageHeader eyebrow="Enrollment · 2027 plan year" title="Open enrollment command center" sub="Keel runs open enrollment, life events, and new-hire eligibility. You approve the messages and changes." />
+      <PageHeader eyebrow="Enrollment · 2027 plan year" title="Open enrollment command center" sub={`${platform.name} runs open enrollment, life events, and new-hire eligibility. You approve the messages and changes.`} />
 
       {/* ── Countdown ───────────────────────────────────── */}
       <section aria-label="Open enrollment countdown" className="mb-14 grid grid-cols-1 border border-ink lg:grid-cols-[1fr_1fr_1.2fr]">
@@ -66,7 +66,7 @@ export function EnrollmentView() {
             </li>
             <li className="flex items-center gap-2.5">
               {packetDone ? <Check className="size-4" aria-hidden /> : <span className="ml-1 mr-0.5 size-2 rounded-full border-[1.5px] border-ink" aria-hidden />}
-              OE packet with SBCs {packetDone ? `scheduled (${packetDone.at})` : soon ? "awaiting your approval" : "Keel drafts this closer to open"}
+              OE packet with SBCs {packetDone ? `scheduled (${packetDone.at})` : soon ? "awaiting your approval" : `${platform.name} drafts this closer to open`}
             </li>
           </ul>
           {!packetDone && soon && (
@@ -98,7 +98,7 @@ export function EnrollmentView() {
             ))}
           </dl>
           {!soon ? (
-            <p className="mt-4 text-[13.5px] text-neutral-600">Early decisions open {fmtShort(openEnrollment.decisionSupportOpened)}. Keel nudges anyone who hasn&apos;t started.</p>
+            <p className="mt-4 text-[13.5px] text-neutral-600">Early decisions open {fmtShort(openEnrollment.decisionSupportOpened)}. {platform.name} nudges anyone who hasn&apos;t started.</p>
           ) : nudged ? (
             <p className="mt-4 flex items-center gap-2 text-[13.5px] font-semibold"><Check className="size-4" aria-hidden /> Nudge sent at {nudged.at}</p>
           ) : (
@@ -254,7 +254,7 @@ export function EnrollmentView() {
         }
       >
         <p className="mb-4 text-[13.5px] text-neutral-600">
-          Keel drafted this. It posts once in #general and goes as a DM to everyone who hasn&apos;t started. Edit anything before approving.
+          {platform.name} drafted this. It posts once in #general and goes as a DM to everyone who hasn&apos;t started. Edit anything before approving.
         </p>
         <label htmlFor="nudge-text" className="sr-only">Slack message</label>
         <textarea

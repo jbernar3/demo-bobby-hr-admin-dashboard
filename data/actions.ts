@@ -3,7 +3,7 @@ import { fmtShort } from "@/lib/dates";
 import type { ApprovalAction } from "@/lib/types";
 import { complianceItems } from "./compliance";
 import { findings } from "./findings";
-import { advisor } from "./company";
+import { advisor, platform } from "./company";
 
 // Everything Keel proposes and Dana approves. Approval state is client-side only (lib/store.tsx).
 
@@ -16,12 +16,12 @@ export const actions: ApprovalAction[] = [
   {
     id: "cobra-priya",
     title: "Send Priya Raman's COBRA election notice",
-    why: "Her Family coverage ended May 31. The notice must go out within 44 days, and Keel has it pre-filled for Keystone Admin.",
+    why: `Her Family coverage ended May 31. The notice must go out within 44 days, and ${platform.name} has it pre-filled for Keystone Admin.`,
     urgency: "today",
     dueDate: due("cobra-priya"),
     href: "/compliance",
     approveLabel: "Approve & send",
-    toast: "Done. Keel sent the COBRA election notice to Priya Raman via Keystone Admin.",
+    toast: `Done. ${platform.name} sent the COBRA election notice to Priya Raman via Keystone Admin.`,
     feed: "Sent COBRA election notice to Priya Raman via Keystone Admin",
   },
   {
@@ -33,24 +33,24 @@ export const actions: ApprovalAction[] = [
     amountLabel: "overbilled",
     href: "/savings?finding=F-1042",
     approveLabel: "Approve & send",
-    toast: "Done. Keel sent Meridian a credit request for Marcus Bell. Credits usually land on the next invoice.",
+    toast: `Done. ${platform.name} sent Meridian a credit request for Marcus Bell. Credits usually land on the next invoice.`,
     feed: "Sent credit request to Meridian for Marcus Bell (May–Jun)",
   },
   {
     id: "oregon-registrations",
     title: "Register for Paid Leave Oregon",
-    why: "Elena Vasquez is your first Oregon employee. Keel will also file Oregon withholding and unemployment insurance on the same form.",
+    why: `Elena Vasquez is your first Oregon employee. ${platform.name} will also file Oregon withholding and unemployment insurance on the same form.`,
     urgency: "today",
     dueDate: due("or-paid-leave"),
     href: "/growth",
     approveLabel: "Approve & file",
-    toast: "Done. Keel filed Paid Leave Oregon, withholding, and UI registrations. Confirmations usually arrive in 3–5 business days.",
+    toast: `Done. ${platform.name} filed Paid Leave Oregon, withholding, and UI registrations. Confirmations usually arrive in 3–5 business days.`,
     feed: "Filed Oregon registrations: Paid Leave Oregon, withholding, UI",
   },
   {
     id: "oe-packet",
     title: "Approve the 2027 open enrollment packet",
-    why: "It includes the three Meridian SBCs, which must go out with OE materials. Keel schedules it for Oct 26.",
+    why: `It includes the three Meridian SBCs, which must go out with OE materials. ${platform.name} schedules it for Oct 26.`,
     urgency: "later",
     dueDate: due("sbc"),
     href: "/enrollment",
@@ -60,11 +60,11 @@ export const actions: ApprovalAction[] = [
   {
     id: "add-aisha-newborn",
     title: "Add Aisha Mohammed's newborn to coverage",
-    why: "Zayn was born Jun 8. Keel drafted the switch from EE+Spouse to Family on medical, dental, and vision.",
+    why: `Zayn was born Jun 8. ${platform.name} drafted the switch from EE+Spouse to Family on medical, dental, and vision.`,
     urgency: "week",
     dueDate: "2026-07-08",
     href: "/enrollment",
-    toast: "Done. Keel submitted Zayn's enrollment to Meridian, Brightline, and ClearView, effective Jun 8.",
+    toast: `Done. ${platform.name} submitted Zayn's enrollment to Meridian, Brightline, and ClearView, effective Jun 8.`,
     feed: "Added Zayn Mohammed to Family coverage, effective Jun 8",
   },
   {
@@ -75,7 +75,7 @@ export const actions: ApprovalAction[] = [
     amount: impact("downgrade-jordan"),
     amountLabel: "per month",
     href: "/employees?id=e04",
-    toast: "Done. Keel changed Jordan Kim to EE+Spouse and requested a June credit.",
+    toast: `Done. ${platform.name} changed Jordan Kim to EE+Spouse and requested a June credit.`,
     feed: "Changed Jordan Kim to EE+Spouse; requested Jun credit",
   },
   // Not on the Today list by default, but reachable from Savings / Growth / Compliance.
@@ -87,7 +87,7 @@ export const actions: ApprovalAction[] = [
     amount: impact("credit-marcus-brightline"),
     amountLabel: "overbilled",
     href: "/savings?finding=F-1043",
-    toast: "Done. Keel sent Brightline a credit request for Marcus Bell.",
+    toast: `Done. ${platform.name} sent Brightline a credit request for Marcus Bell.`,
     feed: "Sent credit request to Brightline for Marcus Bell (May–Jun)",
   },
   {
@@ -98,7 +98,7 @@ export const actions: ApprovalAction[] = [
     amount: Math.abs(impact("add-elena-brightline")),
     amountLabel: "per month",
     href: "/savings?finding=F-1053",
-    toast: "Done. Keel sent Brightline Elena's enrollment, retro to Jun 1.",
+    toast: `Done. ${platform.name} sent Brightline Elena's enrollment, retro to Jun 1.`,
     feed: "Sent Elena Vasquez's dental enrollment to Brightline (retro Jun 1)",
   },
   {
@@ -109,16 +109,16 @@ export const actions: ApprovalAction[] = [
     amount: Math.abs(impact("fix-greg-meridian")),
     amountLabel: "owed",
     href: "/savings?finding=F-1054",
-    toast: "Done. Keel sent Meridian the EE+Child(ren) correction for Greg Novak, retro to Mar 1.",
+    toast: `Done. ${platform.name} sent Meridian the EE+Child(ren) correction for Greg Novak, retro to Mar 1.`,
     feed: "Sent Meridian tier correction for Greg Novak (retro Mar 1)",
   },
   {
     id: "generate-s125",
     title: "Generate a Section 125 plan document",
-    why: `No cafeteria plan document is on file. Keel drafts it and ${advisor.name} reviews before signature.`,
+    why: `No cafeteria plan document is on file. ${platform.name} drafts it and ${advisor.name} reviews before signature.`,
     urgency: "later",
     href: "/compliance",
-    toast: `Done. Keel generated a Section 125 plan document and sent it to ${advisor.name} for review.`,
+    toast: `Done. ${platform.name} generated a Section 125 plan document and sent it to ${advisor.name} for review.`,
     feed: "Generated Section 125 plan document; sent to Marco for review",
   },
   {
@@ -127,16 +127,16 @@ export const actions: ApprovalAction[] = [
     why: "Send a friendly Slack reminder ahead of the Oct 26 open.",
     urgency: "later",
     href: "/enrollment",
-    toast: "Done. Keel posted the reminder in #general and DM'd everyone who hasn't started.",
+    toast: `Done. ${platform.name} posted the reminder in #general and DM'd everyone who hasn't started.`,
     feed: "Nudged employees who haven't started OE (Slack)",
   },
   {
     id: "oe-announcement",
     title: "Post the open enrollment announcement",
-    why: "Drafted by Keel for #general.",
+    why: `Drafted by ${platform.name} for #general.`,
     urgency: "later",
     href: "/enrollment",
-    toast: "Done. Keel posted the open enrollment announcement to #general.",
+    toast: `Done. ${platform.name} posted the open enrollment announcement to #general.`,
     feed: "Posted the OE announcement to #general",
   },
 ];

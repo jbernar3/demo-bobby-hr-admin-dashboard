@@ -1,3 +1,4 @@
+import { platform } from "@/data/company";
 import { STORY } from "@/data/employees";
 import { lifeEvents, newHires } from "@/data/enrollment";
 import { findings } from "@/data/findings";
@@ -65,7 +66,7 @@ export function employeeFlags(emp: Employee, done: DemoState["done"]): Flag[] {
     flags.push({
       id: "cobra",
       text: "COBRA election notice not sent: due Jul 14",
-      detail: "Keel has a pre-filled notice ready for Keystone Admin.",
+      detail: `${platform.name} has a pre-filled notice ready for Keystone Admin.`,
       href: "/compliance",
       urgent: !done["cobra-priya"],
       resolved: !!done["cobra-priya"],

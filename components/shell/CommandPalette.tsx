@@ -10,10 +10,11 @@ import { cn } from "@/lib/format";
 import { Kbd, useDialogBehavior } from "../ui";
 import { NAV } from "./nav";
 import { useUI } from "./ui-context";
+import { platform } from "@/data/company";
 
 interface PaletteItem {
   id: string;
-  group: "Ask Keel" | "Pages" | "Employees";
+  group: string;
   label: string;
   hint?: string;
   icon: "ask" | "page" | "person";
@@ -74,8 +75,8 @@ function PaletteDialog({
     if (q) {
       out.push({
         id: "ask-free",
-        group: "Ask Keel",
-        label: `Ask Keel: “${query.trim()}”`,
+        group: `Ask ${platform.name}`,
+        label: `Ask ${platform.name}: “${query.trim()}”`,
         icon: "ask",
         run: () => onAsk(query.trim()),
       });
@@ -83,7 +84,7 @@ function PaletteDialog({
     ASK_QUESTIONS.filter((a) => !q || a.question.toLowerCase().includes(q))
       .slice(0, q ? 3 : 6)
       .forEach((a) =>
-        out.push({ id: `ask-${a.id}`, group: "Ask Keel", label: a.question, icon: "ask", run: () => onAsk(a.question) }),
+        out.push({ id: `ask-${a.id}`, group: `Ask ${platform.name}`, label: a.question, icon: "ask", run: () => onAsk(a.question) }),
       );
     NAV.filter((n) => !q || n.label.toLowerCase().includes(q) || n.description.toLowerCase().includes(q)).forEach((n) =>
       out.push({ id: `nav-${n.href}`, group: "Pages", label: n.label, hint: n.description, icon: "page", run: () => onNavigate(n.href) }),
@@ -142,7 +143,7 @@ function PaletteDialog({
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Ask Keel or search"
+        aria-label={`Ask ${platform.name} or search`}
         className="relative w-full max-w-[640px] overflow-hidden rounded-[6px] border border-ink bg-paper"
         initial={{ opacity: 0, y: -6, scale: 0.99 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -159,7 +160,7 @@ function PaletteDialog({
               setActive(0);
             }}
             onKeyDown={onKeyDown}
-            placeholder="Ask Keel or search people and pages…"
+            placeholder={`Ask ${platform.name} or search people and pages…`}
             className="h-14 flex-1 bg-transparent text-[16px] outline-none placeholder:text-neutral-400"
             role="combobox"
             aria-expanded="true"
@@ -215,7 +216,7 @@ function PaletteDialog({
           <span className="flex items-center gap-1.5">
             <Kbd>↵</Kbd> select
           </span>
-          <span className="ml-auto">Keel answers from your live plan data</span>
+          <span className="ml-auto">{platform.name} answers from your live plan data</span>
         </div>
       </motion.div>
     </div>

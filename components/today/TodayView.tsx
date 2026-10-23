@@ -5,12 +5,12 @@ import { ArrowUpRight } from "lucide-react";
 import Link from "next/link";
 import { actions } from "@/data/actions";
 import { overnightActivity } from "@/data/activity";
-import { openEnrollment, planningTodos, user } from "@/data/company";
+import { openEnrollment, planningTodos, platform, user } from "@/data/company";
 import { employees } from "@/data/employees";
 import { oeStatusById } from "@/data/enrollment";
 import { addDays, DEMO_TODAY, daysFromToday, fmtShort, parts, relative } from "@/lib/dates";
 import { cn, plural } from "@/lib/format";
-import { demoToast, useDemo } from "@/lib/store";
+import { useDemo } from "@/lib/store";
 import type { Urgency } from "@/lib/types";
 import { Badge, Reveal, SectionTitle, WorkingDot } from "../ui";
 import { ApprovalCard } from "./ApprovalCard";
@@ -53,7 +53,7 @@ export function TodayView() {
           <SectionTitle
             id="approvals-title"
             count={queue.length}
-            right={<span className="text-[12.5px] text-neutral-500">Keel proposes. You approve.</span>}
+            right={<span className="text-[12.5px] text-neutral-500">{platform.name} proposes. You approve.</span>}
           >
             Needs your approval
           </SectionTitle>
@@ -66,7 +66,7 @@ export function TodayView() {
             >
               <p className="text-[40px] font-black leading-none tracking-[-0.04em]">Inbox zero.</p>
               <p className="mt-3 max-w-md text-[15px] text-neutral-400">
-                Everything Keel proposed is approved. Keel keeps watching invoices, deadlines, and thresholds overnight.
+                Everything {platform.name} proposed is approved. {platform.name} keeps watching invoices, deadlines, and thresholds overnight.
               </p>
             </motion.div>
           )}
@@ -95,24 +95,11 @@ export function TodayView() {
 
         {/* ── Right rail ────────────────────────────────── */}
         <div className="space-y-12">
-          <Reveal index={0} as="section" className="border border-ink p-6">
-            <StatLabel>Your next to-dos</StatLabel>
-            <ul className="space-y-2">
-              {planningTodos.map((t) => (
-                <li key={t.id} className="flex items-baseline gap-3 text-[14px]">
-                  <span className="num w-[52px] shrink-0 font-semibold">{fmtShort(addDays(openEnrollment.start, -t.daysBefore))}</span>
-                  <Link href={t.href} className="min-w-0 flex-1 text-neutral-700 hover:text-ink hover:underline">
-                    {t.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-            <StatLink href="/plan">Plan &amp; Costs</StatLink>
-          </Reveal>
+          <OEModule />
 
           <section aria-labelledby="feed-title">
             <SectionTitle id="feed-title" right={<WorkingDot />}>
-              Keel, overnight
+              {platform.name}, overnight
             </SectionTitle>
             <ol className="relative">
               <AnimatePresence initial={false}>
@@ -136,8 +123,6 @@ export function TodayView() {
               ))}
             </ol>
           </section>
-
-          <OEModule />
         </div>
       </div>
     </div>
@@ -200,7 +185,7 @@ function OEModule() {
   const inProgress = statuses.filter((s) => s === "In progress").length;
   const startsIn = daysFromToday(openEnrollment.start);
   return (
-    <section aria-labelledby="oe-title">
+    <Reveal index={0} as="section" className="border border-ink p-6">
       <SectionTitle id="oe-title" right={<Badge tone="solid" mono>{startsIn > 0 ? `Starts ${relative(openEnrollment.start)}` : "Open now"}</Badge>}>
         Open enrollment
       </SectionTitle>
@@ -220,7 +205,7 @@ function OEModule() {
       </dl>
       {startsIn > 30 ? (
         <p className="mt-5 text-[13px] text-neutral-600">
-          Early decisions open <span className="num font-semibold text-ink">{fmtShort(openEnrollment.decisionSupportOpened)}</span>. Keel is lining up the renewal first.
+          Early decisions open <span className="num font-semibold text-ink">{fmtShort(openEnrollment.decisionSupportOpened)}</span>. {platform.name} is lining up the renewal first.
         </p>
       ) : (
       <div className="mt-5">
@@ -236,22 +221,23 @@ function OEModule() {
         </div>
       </div>
       )}
-      <div className="mt-5 flex items-center gap-3 rounded-[4px] border border-neutral-300 px-3 py-2.5">
-        <span className="size-3.5 shrink-0 rounded-[3px] border border-ink" aria-hidden />
-        <span className="min-w-0 flex-1 text-[13px]">
-          <span className="font-semibold">To do:</span> Book time with Marco, your licensed advisor
-        </span>
-        <button
-          type="button"
-          onClick={() => demoToast("Booking time with Marco")}
-          className="shrink-0 text-[12.5px] font-semibold underline-offset-4 hover:underline"
-        >
-          Book
-        </button>
+      <div className="mt-6 border-t border-neutral-200 pt-5">
+        <StatLabel>Your next to-dos</StatLabel>
+        <ul className="space-y-2">
+          {planningTodos.map((t) => (
+            <li key={t.id} className="flex items-baseline gap-3 text-[14px]">
+              <span className="num w-[52px] shrink-0 font-semibold">{fmtShort(addDays(openEnrollment.start, -t.daysBefore))}</span>
+              <Link href={t.href} className="min-w-0 flex-1 text-neutral-700 hover:text-ink hover:underline">
+                {t.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
       </div>
-      <Link href="/enrollment" className="mt-4 inline-flex items-center gap-1 text-[13px] font-semibold underline-offset-4 hover:underline">
-        Enrollment command center <ArrowUpRight className="size-3.5" aria-hidden />
-      </Link>
-    </section>
+      <div className="flex flex-wrap gap-x-5">
+        <StatLink href="/enrollment">Enrollment command center</StatLink>
+        <StatLink href="/plan">Plan &amp; Costs</StatLink>
+      </div>
+    </Reveal>
   );
 }

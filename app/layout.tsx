@@ -3,13 +3,14 @@ import { GeistMono } from "geist/font/mono";
 import { GeistSans } from "geist/font/sans";
 import { AppShell } from "@/components/shell/AppShell";
 import "./globals.css";
+import { platform } from "@/data/company";
 
 export const metadata: Metadata = {
   title: {
-    default: "Keel · Parallax Labs",
-    template: "%s · Keel",
+    default: `${platform.name} · Parallax Labs`,
+    template: `%s · ${platform.name}`,
   },
-  description: "Keel, the AI-native benefits companion. Demo environment with fictitious data.",
+  description: `${platform.name}, the AI-native benefits companion. Demo environment with fictitious data.`,
   robots: { index: false, follow: false },
 };
 
